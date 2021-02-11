@@ -1,14 +1,14 @@
 <header>
 	<div id="me" class="headerpic">
-		<img class="headerpic" src="/me.jpg"/>
+		<img class="headerpic" src="/staticimg/me.jpg"/>
 	</div>
 	<div id="garden" class="headerpic">
-		<img class="headerpic" src="/garden.jpg" />
+		<img class="headerpic" src="/staticimg/garden.jpg" />
 	</div>
 	<div id="title">
-			<img id="titleimg" src="/guildford2.jpg"/>
+			<img id="titleimg" src="/staticimg/guildford.jpg"/>
 			<h1 id="intro">Kens Pub</h1>
-			<h2 id="pagetitle">Plants</h2>
+			<h2 id="pagetitle"></h2>
 			<!--p>I am a Software engineer based in Guildford(UK)</p-->
 			<!--p>Welcome</p-->
 	</div>
