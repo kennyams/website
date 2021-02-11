@@ -1,0 +1,3 @@
+[submodule "phplib/aws"]
+	path = phplib/aws
+	url = https://github.com/kennyams/aws_signaturev4.git
