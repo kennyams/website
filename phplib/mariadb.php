@@ -1,6 +1,6 @@
 <?php
 $my=null;
-include("$root/../ssl/cred/dbpass.php");
+include("$root/../ssl/creds/dbpass.php");
 function connect(){
 	global $my;
 	if($my != null){
