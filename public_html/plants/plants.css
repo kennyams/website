@@ -69,7 +69,7 @@
 	}
 	img#mainImage{
 		image-orientation: from-image;
-		object-fit:cover;
+		object-fit:contain;
 		width:100%;
 		max-height:100%;
 	}
