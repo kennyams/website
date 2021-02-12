@@ -336,10 +336,13 @@ function firstDate(){
 
 function GetImagesM($post){
 	$my=connect();
-	$map=$post['map'];
-	unset($post['map']);
-	$poly = json_decode($map);
-	$poly = getPoly($poly);
+	$poly='';
+	if(array_key_exists('map',$post)){
+		$map=$post['map'];
+		unset($post['map']);
+		$poly = json_decode($map);
+		$poly = getPoly($poly);
+	}
 	$p=json_encode($post);
 	if(mysqli_connect_errno()){
 		printf("Connection Error: %s\n" , mysqli_connect_error());
