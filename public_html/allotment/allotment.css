@@ -1,0 +1,31 @@
+figure{
+	border:solid 5pt grey;
+}
+
+#svg{
+	width:600px;
+	height:450px;
+	display:block;
+	position:absolute;
+	border:solid 1pt grey;
+	z-index:1;
+}
+svg{
+	width:100%;
+	height:100%;
+}
+#allotment-content
+{
+	display:flex;
+	flex-direction:column;
+	position:absolute;
+	overflow:scroll;
+}
+
+section#mainarea{
+	grid-area:main;
+	position:relative;
+}
+#map{
+	visibility:visible;
+}
