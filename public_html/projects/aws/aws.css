@@ -1,0 +1,34 @@
+main{
+	display:grid;
+	grid-template-areas:
+		". h h"
+		"v p p"
+		"v p p"
+		". c m"
+		". . m";
+	grid-template-columns:auto auto auto;
+	grid-template-rows:auto auto auto 30px 100px;
+	margin:10px;
+
+}
+#pan{
+	grid-area:h;
+	width:100;
+}
+#tilt{
+	grid-area:v;
+	height:100%;
+	justify-self:center;
+}
+#pic{
+	grid-area:p;
+}
+#snap{
+	grid-area:c;
+}
+#vid{
+	grid-area:m;
+	height:100%;
+	justify-self:center;
+}
+
