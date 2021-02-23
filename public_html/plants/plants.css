@@ -25,7 +25,7 @@
 		}
 		#mapframe{
 			height:100%;
-			width:100%;
+			/*width:100%;*/
 		}
 	}
 	@media (orientation: portrait){
@@ -47,7 +47,7 @@
 		}
 		#mapframe{
 			height:100%;
-			width:100%;
+			/*width:100%;*/
 		}
 	}
 
