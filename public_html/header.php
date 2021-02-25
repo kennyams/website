@@ -42,7 +42,7 @@
 							hrf="/projects";
 							break;
 						case "m_aws_iot":
-							hrf="/projects/iot";
+							hrf="/projects/aws";
 							break;
 					}
 					window.location.href=hrf;
