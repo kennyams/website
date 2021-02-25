@@ -38,6 +38,12 @@
 						case "m_cv":
 							hrf="/cvs/cv.html";
 							break;
+						case "m_projects":
+							hrf="/projects";
+							break;
+						case "m_aws_iot":
+							hrf="/projects/iot";
+							break;
 					}
 					window.location.href=hrf;
 				}
@@ -49,13 +55,20 @@
 			<li><div id="m_home">Home<span class="ui-icon ui-icon-home"></span></div></li>
 			<li><div id="m_blog" >Blog</div></li>
 			<li><div id="m_plants">Plants</div></li>
-			<li><div id="m_allotment">Allotment</div>
+			<li>
+				<div id="m_allotment">Allotment</div>
 				<ul>
 					<li class="ui-state-disabled"><div>Sections</div></li>
 					<li><div id="m_moles">Moles</div></li>
 				</ul>
 			</li>
-			<li class="ui-state-disabled"><div>Projects</div></li>
+			<li>
+				<div id="m_projects">Projects</div>
+				<ul>
+					<li class="ui-state-disabled"><div>Sections</div></li>
+					<li><div id="m_aws_iot">AWS IOT</div></li>
+				</ul>
+			</li>
 			<li><div id="m_cv">CV</div></li>
 		</ul>
 	</nav>

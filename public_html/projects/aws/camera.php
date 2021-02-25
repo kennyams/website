@@ -16,9 +16,6 @@
 	$root=$_SERVER["DOCUMENT_ROOT"];
 	require("$root/../ssl/endpoints/iot.php");
 	require "$root/../phplib/aws/sigv4.php";
-	//error_log(IOT_ENDPOINT);
-	//error_log(IOT_PORT);
-	//error_log(IOT_CRED_FILE);
   	echo "<textarea rows=\"50\" cols=\"180\">";
 	$move=False;
 	$pan=0;

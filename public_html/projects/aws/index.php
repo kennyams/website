@@ -92,7 +92,7 @@
 					}
 			});
 			try{
-				var res = xhttp.open("GET", "status.php");
+				// TODO var res = xhttp.open("GET", "status.php");
 			}catch{
 			}
 			xhttp.send();
