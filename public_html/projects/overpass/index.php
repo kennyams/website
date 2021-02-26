@@ -1,4 +1,3 @@
-<!-- depends on jslib/mapping.js -->
 <?php
 		function p($msg){
 			//print_r("<p>$msg</p>");
@@ -91,19 +90,29 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	<script src="../jslib/mapping.js"></script>
-	<script src="//code.jquery.com/jquery-1.12.4.js"></script>
-	<link href="overpass.css" rel="stylesheet"/>
+		<?php
+			$root=$_SERVER["DOCUMENT_ROOT"];
+			include "$root/head.php";
+		?>
+		<script src="/jslib/mapping.js"></script>
+		<link href="overpass.css" rel="stylesheet"/>
 	<script>
 		var ways = [
 <?php
 		//print_r($_GET);
 		$coords = new stdClass();
-		$coords->x=$_GET['x'];
-		$coords->y=$_GET['y'];
-		$coords->scale=$_GET['scale'];
+		if(array_key_exists('x',$_GET) && array_key_exists('y',$_GET)){
+			$coords->x=$_GET['x'];
+			$coords->y=$_GET['y'];
+		}else{
+			$coords->x=51.24658;
+			$coords->y=-0.58364;
+		}
+		if(array_key_exists('scale',$_GET)){
+			$coords->scale=$_GET['scale'];
+		} else{
+			$coords->scale=0.01;
+		}
 		$res = overpass($coords);
 ?>
 ];
@@ -127,6 +136,10 @@
 	</script>
     </head>
     <body>
+		<?php
+			$root=$_SERVER["DOCUMENT_ROOT"];
+			include "$root/header.php";
+		?>
         <main>
 			<div id="map"></div>
 			<div id="debug">
@@ -143,6 +156,9 @@
 ?>
 			</div>
         </main>
+		<script>
+			$("#pagetitle").html("<p>Prototype of SVG mapping using overpass api to the openstreetmap database</p>");
+		</script>
     </body>
 </html>
 

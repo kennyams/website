@@ -44,6 +44,9 @@
 						case "m_aws_iot":
 							hrf="/projects/aws";
 							break;
+						case "m_overpass":
+							hrf="/projects/overpass";
+							break;
 					}
 					window.location.href=hrf;
 				}
@@ -67,6 +70,7 @@
 				<ul>
 					<li class="ui-state-disabled"><div>Sections</div></li>
 					<li><div id="m_aws_iot">AWS IOT</div></li>
+					<li><div id="m_overpass">SVG Mapping</div></li>
 				</ul>
 			</li>
 			<li><div id="m_cv">CV</div></li>
