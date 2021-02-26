@@ -14,7 +14,7 @@
 			include "$root/header.php";
 		?>
 		<main>
-			<a href="https://github.com/kennyams">Source code to this site can be found here</a>
+			<a href="https://github.com/kennyams/website">Source code to this site can be found here</a>
 		</main>
 	</body>
 </html>
