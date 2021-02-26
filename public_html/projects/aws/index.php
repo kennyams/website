@@ -35,7 +35,7 @@
 				xhttp.open("GET", "camera.php?tilt="+ui.value);
 				xhttp.send();
 				window.setTimeout(takePic,1000);
-				window.setTimeout(getStatus,300);
+				//window.setTimeout(getStatus,300);
 			}
 		});
 		$("#pan").slider({
@@ -48,7 +48,7 @@
 				xhttp.open("GET", "camera.php?pan="+ui.value);
 				xhttp.send();
 				window.setTimeout(takePic,1000);
-				window.setTimeout(getStatus,300);
+				//window.setTimeout(getStatus,300);
 			}
 		});
 		function loadPic(){
@@ -61,7 +61,7 @@
 			xhttp.open("GET", "camera.php?click=1");
 			xhttp.send();
 			window.setTimeout(loadPic,3000);
-			window.setTimeout(getStatus,300);
+			//window.setTimeout(getStatus,300);
 		}
 		function movev(event){
 			console.log("move");
@@ -76,7 +76,7 @@
 			}
 			xhttp.send();
 			window.setTimeout(takePic,1000);
-			window.setTimeout(getStatus,300);
+			//window.setTimeout(getStatus,300);
 
 		}
 		function getStatus(){
