@@ -296,7 +296,7 @@
 		}
 	}
 
-	@media (min-width:1281px) {  hi-res laptops and desktops  
+	@media (min-width:1281px) { /* hi-res laptops and desktops */ 
 		main {
 			display:grid;
 				grid-template-areas:
