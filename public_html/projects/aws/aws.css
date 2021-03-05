@@ -32,6 +32,7 @@
 #pic{
 	grid-area:p;
 	width:100%;
+	image-orientation: from-image;
 }
 #snap{
 	grid-area:c;

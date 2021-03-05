@@ -19,7 +19,7 @@
 				<div id="pan"></div>
 				<div id="tilt"></div>
 				<button id="snap" onclick="takePic()">click</button>
-				<img id="pic" src="https://iotpicbucket.s3.eu-west-2.amazonaws.com/pic.jpg?"+performance.now() style="width:100;image-orientation: from-image;" width="100%" />
+				<img id="pic" src="https://iotpicbucket.s3.eu-west-2.amazonaws.com/pic.jpg?" +performance.now() >
 			</div>
 			<div id="blurb" class="article maingrid">
 				<p>In this project I hook up my raspberry pi to the internet using AWS services</p>
@@ -32,7 +32,7 @@
 <!--width="928" height="522"-->
 			<img id="wipi" class="maingrid" src="/staticimg/wipi.jpg"/>
 			<div id="diagram" class="maingrid">
-				<object id="diagram" data="iotarch.svg"></svg>
+				<object id="diagram" data="iotarch.svg"></object>
 			</div>
 		</main>
 	<script>
