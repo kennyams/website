@@ -15,12 +15,25 @@
 			include "$root/header.php";
 		?>
 		<main>
-			<div id="pan"></div>
-			<div id="tilt"></div>
-			<button id="snap" onclick="takePic()">click</button>
-			<img id="pic" src="https://iotpicbucket.s3.eu-west-2.amazonaws.com/pic.jpg?"+performance.now() style="width:100;image-orientation: from-image;" width="100%" />
-			<iframe id="vid" src="https://www.youtube.com/embed/rQw8OsW6o3c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<div id="camera" class="maingrid">
+				<div id="pan"></div>
+				<div id="tilt"></div>
+				<button id="snap" onclick="takePic()">click</button>
+				<img id="pic" src="https://iotpicbucket.s3.eu-west-2.amazonaws.com/pic.jpg?"+performance.now() style="width:100;image-orientation: from-image;" width="100%" />
+			</div>
+			<div id="blurb" class="article maingrid">
+				<p>In this project I hook up my raspberry pi to the internet using AWS services</p>
+				<p>The camera is normally off but the last image taken is shown on the left and should alter from time to time. If you happen to be visiting when the camera is on you should be able to look around and take a photo</p>
+				<p>As I write this the image is of potatoes chitting, getting ready for the allotment.</p>
+				<p>Bottom left of the page shows a simple diagram of the system. I use three aws services, S3, IOT and Lamda functions. Using these I have incurred virtually no cost in running the system. When the PI is off none of these services incure any cost as the usage is too low.</p>
+			</div>
+
+			<!--iframe id="vid" class="maingrid" src="https://www.youtube.com/embed/rQw8OsW6o3c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe-->
 <!--width="928" height="522"-->
+			<img id="wipi" class="maingrid" src="/staticimg/wipi.jpg"/>
+			<div id="diagram" class="maingrid">
+				<object id="diagram" data="iotarch.svg"></svg>
+			</div>
 		</main>
 	<script>
 		$("#pagetitle").html("<p>Internet of things(IOT) demo</p>");

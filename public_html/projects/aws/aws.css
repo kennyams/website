@@ -1,15 +1,24 @@
-main{
+.maingrid{
+	border:solid black 2px;
+	padding:5px;
+	margin:10px;
+}
+#camera{
 	display:grid;
+	grid-area:c;
 	grid-template-areas:
 		". h h"
 		"v p p"
 		"v p p"
-		". c m"
-		". . m";
-	grid-template-columns:auto auto auto;
-	grid-template-rows:auto auto auto 30px 100px;
-	margin:10px;
+		". c .";
+	grid-template-columns:10px 2fr 2fr;
+	grid-template-rows:auto auto auto 30px;
 
+}
+
+#blurb{
+	grid-area:b;
+	width:100;
 }
 #pan{
 	grid-area:h;
@@ -22,13 +31,54 @@ main{
 }
 #pic{
 	grid-area:p;
+	width:100%;
 }
 #snap{
 	grid-area:c;
 }
-#vid{
+#diagram{
 	grid-area:m;
 	height:100%;
 	justify-self:center;
+	overflow:scroll;
 }
+#wipi{
+	grid-area:w;
+	width:100%;
+	justify-self:center;
+	margin-top:30px;
+}
+main{
+	display:grid;
+	grid-template-areas:
+		"c c"
+		"c c"
+		"b b"
+		"b b"
+		"m m"
+		"m m"
+		"w w"
+		"w w";
+	grid-template-columns:1fr 1fr;
+	grid-template-rows:auto auto auto auto  auto  auto  auto  30px;
+	margin:10px;
+}
+
+@media (min-width:1000px) { /* hi-res laptops and desktops  */
+	main{
+		display:grid;
+		grid-template-areas:
+			"c c b b"
+			"c c b b"
+			"m m w w"
+			"m m w w";
+		grid-template-columns:2fr 2fr 1fr 1fr;
+		grid-template-rows:auto auto auto 30px;
+		margin:10px;
+	}
+#wipi{
+	margin-top:10px;
+}
+}
+
 
