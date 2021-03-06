@@ -35,7 +35,9 @@
 				<img  src="/staticimg/wipi.jpg"/>
 			</div>
 			<div id="diagram" class="maingrid">
-				<object id="diagram" data="iotarch.svg"></object>
+				<div>
+					<object data="iotarch.svg"></object>
+				</div>
 			</div>
 		</main>
 	<script>

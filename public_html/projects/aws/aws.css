@@ -39,11 +39,11 @@
 }
 #diagram{
 	grid-area:m;
-	justify-self:center;
+}
+#diagram div{
 	overflow:scroll;
 }
 #diagram object{
-	width:100%;
 }
 #wipi{
 	grid-area:w;
