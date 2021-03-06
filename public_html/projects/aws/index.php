@@ -8,6 +8,7 @@
 		<title>AWS Experiments</title>
 		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.632.0.min.js"></script>
 		<link href="aws.css" rel="stylesheet"/>
+		<!--script src="vid.js"></script-->
 	</head>
 	<body>
 		<?php
@@ -30,7 +31,9 @@
 
 			<!--iframe id="vid" class="maingrid" src="https://www.youtube.com/embed/rQw8OsW6o3c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe-->
 <!--width="928" height="522"-->
-			<img id="wipi" class="maingrid" src="/staticimg/wipi.jpg"/>
+			<div id="wipi" class="maingrid">
+				<img  src="/staticimg/wipi.jpg"/>
+			</div>
 			<div id="diagram" class="maingrid">
 				<object id="diagram" data="iotarch.svg"></object>
 			</div>
