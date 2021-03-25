@@ -7,7 +7,6 @@ function plantdata($plant){
 	} else {
 		echo 'A php.ini file is not loaded';
 	}
-	$api_key=PLANTKEY;
 	$base="https://my-api.plantnet.org/v2/identify/all?api-key=$api_key";
 	$picurl="https://pub.me.uk$plant";
 	echo "<p>plantdata $picurl</p>";
