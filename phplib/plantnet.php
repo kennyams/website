@@ -1,5 +1,5 @@
 <?php
-include("$root/../ssl/cred/plantnetkey.php");
+include("$_SERVER[DOCUMENT_ROOT]/../ssl/cred/plantnetkey.php");
 function plantdata($plant){
 	$inipath = php_ini_loaded_file();
 	if ($inipath) {
