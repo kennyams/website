@@ -1,6 +1,8 @@
 <?php
 include("$_SERVER[DOCUMENT_ROOT]/../ssl/keys/plantnetkey.php");
+echo $api_key;
 function plantdata($plant){
+	global $api_key;
 	$inipath = php_ini_loaded_file();
 	if ($inipath) {
 		echo 'Loaded php.ini: ' . $inipath;
