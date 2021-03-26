@@ -14,7 +14,7 @@ function plantdata($plant){
 	echo "<p>plantdata $picurl</p>";
 	$url= $base."&images=".$picurl."&organs=flower";
 	$encodedUrl=urlencode($url);
-	echo "<p>$url</p>";
+	//echo "<p>$url</p>";
 	//$jsonstr = file_get_contents($url);
 	$ch = curl_init($url); // such as http://example.com/example.xml
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
