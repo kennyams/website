@@ -3,6 +3,11 @@
 function make_thumb($src, $desired_width) {
 	//thanks stack overflow
 
+	if(!file_exists($src))
+	{
+		error_log(print_r("missing file $src",true));
+		return false;
+	}
     $source_image = imagecreatefromjpeg($src);
     $width = imagesx($source_image);
     $height = imagesy($source_image);

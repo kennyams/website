@@ -8,7 +8,8 @@ function connect(){
 		return $my;
 	}
 
-	$my= new mysqli('localhost', DBUSER, DBPASS, DBDB );
+	//$my= new mysqli('localhost', DBUSER, DBPASS, DBDB );
+	$my= new mysqli(SERVER, DBUSER, DBPASS, DBDB );
 	if(mysqli_connect_errno()){
 		printf("Connection Error: %s\n" , mysqli_connect_error());
 		return null;
