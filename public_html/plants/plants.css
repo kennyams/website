@@ -7,50 +7,6 @@
 	}
 
 
-	@media (orientation: landscape){
-		main{
-		grid-template-areas:
-				"header header header"
-			  "filter map map"
-			  "thumb thumb thumb"
-			  "main main main";
-		grid-template-rows:auto auto auto 500px;
-		}
-
-		#imageview{
-  			height: 100%;
-		}
-		#content{
-			flex-direction:row;
-		}
-		#mapframe{
-			height:100%;
-			/*width:100%;*/
-		}
-	}
-	@media (orientation: portrait){
-		main{
-		grid-template-areas:
-				"header header header"
-			  "filter filter filter"
-			  "map map map "
-			  "thumb thumb thumb"
-			  "main main main" ;
-		grid-template-rows:auto auto 500px auto auto ;
-		}
-
-		#imageview{
-			width:100%;
-		}
-		#content{
-			flex-direction:column;
-		}
-		#mapframe{
-			height:100%;
-			/*width:100%;*/
-		}
-	}
-
 
 
 	#mapframe{
@@ -217,11 +173,56 @@
 	.test{
 		background-color:red;
 	}
+
+
+	@media (orientation: landscape){
+		main{
+		grid-template-areas:
+			  "filter map map"
+			  "thumb thumb thumb"
+			  "main main main";
+		grid-template-rows:auto auto auto 500px;
+		}
+
+		#imageview{
+  			height: 100%;
+		}
+		#content{
+			flex-direction:row;
+		}
+		#mapframe{
+			height:100%;
+			/*width:100%;*/
+		}
+	}
+
+	@media (orientation: portrait){
+		main{
+		grid-template-areas:
+			  "filter filter filter"
+			  "map map map "
+			  "thumb thumb thumb"
+			  "main main main" ;
+		grid-template-rows:auto auto 500px auto auto ;
+		}
+
+		#imageview{
+			width:100%;
+		}
+		#content{
+			flex-direction:column;
+		}
+		#mapframe{
+			height:100%;
+			/*width:100%;*/
+		}
+	}
+
+
 	@media (min-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */
 		main {
 			display:grid;
 				grid-template-areas:
-					"header header header"
 					"filter filter filter"
 				    "map map map"
 					"thumb main main"
@@ -238,7 +239,6 @@
 		main {
 			display:grid;
 				grid-template-areas:
-					"header header header"
 					"filter map map"
 					"thumb main main"
 					;
@@ -254,7 +254,6 @@
 		main {
 			display:grid;
 				grid-template-areas:
-					"header header header"
 					"filter map map"
 					"thumb main main"
 					;
@@ -269,7 +268,6 @@
 		main {
 			display:grid;
 				grid-template-areas:
-					"header header header"
 					"filter map map"
 					"thumb main main"
 					;
@@ -284,7 +282,6 @@
 		main {
 			display:grid;
 				grid-template-areas:
-					"header header header"
 					"filter map map"
 					"thumb main main"
 					;
@@ -302,7 +299,6 @@
 				grid-template-areas:
 					"filter map map main main"
 					"thumb map map main main"
-					"header header header"
 					;
 				grid-template-columns:1fr 1fr 1fr 1fr 1fr;
 				grid-template-rows:auto 500pt;
