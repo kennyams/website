@@ -12,11 +12,17 @@
 		$("#frompicker").datepicker({
 			dateFormat:"yy-mm-dd",
 				autoSize:true,
-				showButtonPanel:true
+				showButtonPanel:true,
+				onSelect:function(dateText){
+					updateThumbs(null);
+				}
 		});
 		$("#topicker").datepicker({
 			dateFormat:"yy-mm-dd",
-				autoSize:true
+				autoSize:true,
+				onSelect:function(dateText){
+					updateThumbs(null);
+				}
 		});
 		$("#place").submit(function(event){
 			event.preventDefault();
