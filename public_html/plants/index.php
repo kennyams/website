@@ -26,32 +26,32 @@
 		<!--p id="FilterSettings" class="toggleControl">Settings</p-->
 		<main>
 			<div id="filtercont">
-			<form id="filter" >
-				<!--p id="Filter" class="toggleControl" style="grid-row:1;grid-column:1">Filter</p-->
-				<label class="dropitem a1" for="familySelected[]">Family</label>
-				<select class="dropitem b1" multiple  id="familySelected" name="familySelected[]" form="filter" > </select>
-				<label class="dropitem a2" for="genusSelected" >Genus</label>
-				<select class="dropitem b2" multiple  id="genusSelected" name="genusSelected[]" form="filter" > </select>
-				<label class="dropitem a3" for="speciesSelected">Species</label>
-				<select class="dropitem b3" multiple  id="speciesSelected" name="speciesSelected[]" form="filter" > </select>
-				
-				<!--p id="DateRange" class="toggleControl" style="grid-row:4;grid-column:1">DateRange</p-->
-				<label class="c1">From:</label>
-				<input class="d1" type="text" id="frompicker"/>
-				<label class="c2">To:</label>
-				<input  class="d2" type="text" id="topicker"/>
-				<!--p id="control" class="toggleControl">Control</p-->
-			</form>
-			<div>
-				<input class="e2" id="onmap" form="filter" type="checkbox" value="map"/>
-				<form class="e1" id="upload" action="/plants/upload/plantpic.html"> 
-					<input form="upload" type="submit" value="Upload"/>
+				<form id="filter" >
+					<!--p id="Filter" class="toggleControl" style="grid-row:1;grid-column:1">Filter</p-->
+					<label class="dropitem a1" for="familySelected[]">Family</label>
+					<select class="dropitem b1" multiple  id="familySelected" name="familySelected[]" form="filter" > </select>
+					<label class="dropitem a2" for="genusSelected" >Genus</label>
+					<select class="dropitem b2" multiple  id="genusSelected" name="genusSelected[]" form="filter" > </select>
+					<label class="dropitem a3" for="speciesSelected">Species</label>
+					<select class="dropitem b3" multiple  id="speciesSelected" name="speciesSelected[]" form="filter" > </select>
+					
+					<!--p id="DateRange" class="toggleControl" style="grid-row:4;grid-column:1">DateRange</p-->
+					<label class="c1">From:</label>
+					<input class="d1" type="text" id="frompicker"/>
+					<label class="c2">To:</label>
+					<input  class="d2" type="text" id="topicker"/>
+					<!--p id="control" class="toggleControl">Control</p-->
 				</form>
-				<form class="e3" id="place" > 
-					<label class="c1">Find Place</label>
-					<input id="i_place" form="place" type="text" value="Surrey"/>
-				</form>
-			</div>
+				<form id="upload" action="/plants/upload/plantpic.html"> </form>
+				<form id="place" > </form>
+				<div id="filterOptions">
+					<label  for="onmap">Filter on map area</label>
+					<input class="filterOptionsOption" id="onmap" form="filter" type="checkbox" value="map"/>
+					<label  >Find Place</label>
+					<input class="filterOptionsOption" id="i_place" form="place" type="text" value="Surrey"/>
+					<div ></div>
+					<input class="filterOptionsOption" form="upload" type="submit" value="Upload"/>
+				</div>
 			</div>
 			<!--p id="Selection" class="toggleControl">Selection</p-->
 			<div id="piccontainer"> </div>

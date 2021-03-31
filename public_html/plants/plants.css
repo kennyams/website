@@ -92,10 +92,20 @@
 		grid-area:filter;
 		display:flex;
 		flex-direction:column;
+		background-color:pink;
 	}
 	#filter {
 		display:flex;
 		flex-direction:column;
+	}
+	#filterOptions{
+		display:grid;
+		grid-template-columns:1fr 1fr;
+		grid-template-rows:auto auto;
+		justify-items:baseline;
+	}
+	.filterOptionsOption{
+		border:solid black 1px;
 	}
 	.toggleControl{
 		width:100%;
