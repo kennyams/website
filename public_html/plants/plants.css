@@ -301,7 +301,7 @@
 					"thumb main main"
 					;
 				grid-template-columns:1fr 1fr 1fr;
-				grid-template-rows:auto auto 100vh;
+				grid-template-rows:auto 100vh;
 		}
 		#piccontainer{
 			grid-template-columns: repeat(4,1fr);
