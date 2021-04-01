@@ -195,7 +195,7 @@
 			  "filter map map"
 			  "thumb thumb thumb"
 			  "main main main";
-		grid-template-rows:auto auto auto 500px;
+		grid-template-rows:auto auto 500px;
 		}
 
 		#imageview{
@@ -217,7 +217,7 @@
 			  "map map map "
 			  "thumb thumb thumb"
 			  "main main main" ;
-		grid-template-rows:auto auto 500px auto auto ;
+		grid-template-rows:auto 500px auto auto ;
 		}
 
 		#imageview{
@@ -257,7 +257,7 @@
 					"thumb main main"
 					;
 				grid-template-columns:1fr 2fr 2fr;
-				grid-template-rows:auto auto 100vh;
+				grid-template-rows:auto 100vh;
 		}
 		#piccontainer{
 			grid-template-columns: repeat(1,1fr);
@@ -287,7 +287,7 @@
 					"thumb main main"
 					;
 				grid-template-columns:1fr 1fr 1fr;
-				grid-template-rows:auto auto 100vh;
+				grid-template-rows:auto 100vh;
 		}
 		#piccontainer{
 			grid-template-columns: repeat(3,1fr);
