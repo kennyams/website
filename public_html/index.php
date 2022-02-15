@@ -14,8 +14,10 @@
 			include "$root/header.php";
 		?>
 		<main>
-			<a href="https://github.com/kennyams/website">Source code to this site can be found here</a>
 		</main>
+		<?php
+			include "$root/footer.php";
+		?>
 	</body>
 </html>
 

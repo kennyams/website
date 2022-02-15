@@ -74,5 +74,8 @@
 			<script>
 			</script>
 		</main>
+		<?php
+			include "$root/footer.php";
+		?>
 	</body>
 </html>
