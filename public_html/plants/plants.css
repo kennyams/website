@@ -1,12 +1,16 @@
 	html {
 		width:100%;
 	}
+	main{
+		height:auto;
+	}
+	body{
+		height:auto;
+	}
 	#mapid{
 		width:100%;
 		height:100%;
 	}
-
-
 
 
 	#mapframe{
@@ -23,14 +27,16 @@
 	}
 	#picframe{
 		display:flex;
-		flex-direction:column;
+		flex-flow:column;
+		margin:auto;
+		width:100%;
 		height:100%;
 	}
 	img#mainImage{
 		image-orientation: from-image;
 		object-fit:contain;
 		width:100%;
-		max-height:100%;
+		height:90%;
 	}
 	#rightview{
 		position:relative;
@@ -40,11 +46,12 @@
 		width:100%;
 	}
 	#imageinfo{
+		text-align:center;
 	}
 	#mainarea{
 		grid-area:main;
 		display:flex;
-		height:90%;
+		overflow:auto;
 
 	}
 
@@ -73,13 +80,23 @@
 		width:100%;
 	}
 
-	#piccontainer{
+	#piccontainerCont{
 		grid-area:thumb;
+		height:auto;
+	}
+	#piccontainer{
 		display : grid;
-		overflow:auto;
+		overflow-y:scroll;
+		overflow-x:clip;
 		border:2px solid white;
 		align-content:baseline;
 		align-items;
+		height:100%;
+		
+	}
+	#loading{
+		position:absolute;
+		z-index:10;
 	}
 	@media (orientation: landscape){
 		#piccontainer{
@@ -272,8 +289,7 @@
 					"thumb main main"
 					;
 				grid-template-columns:1fr 1fr 1fr;
-				grid-template-rows:1fr 1fr;
-				height:100vh;
+				grid-template-rows:1fr 100vh;
 		}
 		#piccontainer{
 			grid-template-columns: repeat(2,1fr);
@@ -316,7 +332,7 @@
 					"thumb map map main main"
 					;
 				grid-template-columns:1fr 1fr 1fr 1fr 1fr;
-				grid-template-rows:1fr 1fr;
+				grid-template-rows:50% 50%;
 				height:100vh;
 		}
 		#piccontainer{
@@ -332,7 +348,7 @@
 					"thumb map map main main"
 					;
 				grid-template-columns:1fr 1fr 1fr 1fr 1fr;
-				grid-template-rows:1fr 1fr;
+				grid-template-rows:50% 50%;
 				height:100vh;
 		}
 		#piccontainer{

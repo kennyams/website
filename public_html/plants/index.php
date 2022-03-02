@@ -54,7 +54,12 @@
 				</div>
 			</div>
 			<!--p id="Selection" class="toggleControl">Selection</p-->
-			<div id="piccontainer"> </div>
+			<div id="piccontainerCont">
+				<h2 id="loading" >Loading</h2>
+				<div id="piccontainer" >
+				</div>
+			</div>
+			<!--div id="piccontainer"></div-->
 
 			<!--section id="mainarea"-->
 				<!--div id="content"-->
@@ -62,7 +67,7 @@
 						<figure id="picframe">
 							<!--img id="mainImage" style="image-orientation: from-image;"/-->
 							<img id="mainImage"/>
-							<figcaption id="imageinfo" ></figcaption>
+							<figure-caption id="imageinfo" ></figure-caption>
 						</figure>
 					</div>
 				<!--/div-->

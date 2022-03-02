@@ -1,6 +1,10 @@
 	var ori;
 	var Markers;
 	var mymap;
+	$ ( document ).ajaxStart(function(){
+		$('#piccontainer').empty();
+		$("#loading").show();
+	});
 	$( function() {
 		$("#pagetitle").html("Plants collected on my phone");
 		$("#DateFromSelect").on("click",function(){
@@ -158,6 +162,7 @@
 				contentType:false,
 				success:function(x,y,z)
 				{
+					$("#loading").hide();
 					$('#piccontainer').empty();
 					var res=JSON.parse(x);
 					var div = document.getElementById('piccontainer');

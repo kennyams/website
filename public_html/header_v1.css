@@ -30,6 +30,9 @@ footer{
 	position:relative;
 	font-size:10px;
 	grid-area:footer;
+	border-top-style:double;
+	border-color:#72c2d5;
+	border-top-width:thick;
 }
 nav{
 	grid-area:nav;
@@ -95,6 +98,7 @@ h2#pagetitle{
 		position:absolute;
 		height:100%;
 		width:100%;
+		object-fit:cover;
 	}
 	div.headerpic{
 		display:flex;
@@ -142,6 +146,7 @@ h2#pagetitle{
 		position:absolute;
 		height:100%;
 		width:100%;
+		object-fit:cover;
 	}
 
 	div.headerpic{

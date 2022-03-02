@@ -1,8 +1,9 @@
 <?php
 	include $_SERVER['DOCUMENT_ROOT']."/../phplib/mariadb.php";
 	include $_SERVER['DOCUMENT_ROOT']."/../phplib/imglocation.php";
+	include_once $_SERVER['DOCUMENT_ROOT']."/../phplib/log.php";
 	function AddLocation(){
-		print_r("AddLocation");
+		Logs("AddLocation()");
 		global $my;
 		$my=connect();
 		if(mysqli_connect_errno()){
@@ -12,8 +13,9 @@
 		$images=array();
 		if($result = $my->query($query,MYSQLI_STORE_RESULT)){
 			while($row = $result->fetch_assoc()){
+				Logs(implode(",",$row));
 				$loc=json_decode(getLocation($row['image']));
-				echo "<h3>".$row['image']."</h3>";
+				Logs($loc);
 				echo "<p>".$loc->lat.",".$loc->lon."</p>";
 				$params=$row['id'].",POINT($loc->lat,$loc->lon)";
 				echo "$params";
