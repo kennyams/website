@@ -1,8 +1,11 @@
 <!DOCTYPE html>
+<?php 
+$root=$_SERVER["DOCUMENT_ROOT"];
+include "$root/session.php";
+?>
 <html>
 	<head>
 		<?php
-			$root=$_SERVER["DOCUMENT_ROOT"];
 			include "$root/head.php";
 		?>
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
@@ -22,6 +25,7 @@
 		<?php
 			$root=$_SERVER["DOCUMENT_ROOT"];
 			include "$root/header.php";
+			include "$root/../phplib/mariadb.php";
 		?>
 		<!--p id="FilterSettings" class="toggleControl">Settings</p-->
 		<main>
@@ -42,15 +46,21 @@
 					<input  class="d2" type="text" id="topicker"/>
 					<!--p id="control" class="toggleControl">Control</p-->
 				</form>
-				<form id="upload" action="/plants/upload/plantpic.html"> </form>
 				<form id="place" > </form>
 				<div id="filterOptions">
 					<label  for="onmap">Filter on map area</label>
 					<input class="filterOptionsOption" id="onmap" form="filter" type="checkbox" value="map"/>
 					<label  >Find Place</label>
 					<input class="filterOptionsOption" id="i_place" form="place" type="text" value="Surrey"/>
-					<div ></div>
-					<input class="filterOptionsOption" form="upload" type="submit" value="Upload"/>
+					<div></div>
+
+<?php
+					$p=GetPermissions($_SESSION["email"]);
+					if($p["upload_images"]=="1"){
+						echo '<form id="upload" action="/plants/upload/plantpic"> </form>';
+						echo '<input class="filterOptionsOption" form="upload" type="submit" value="Upload"/>';
+					}
+?>
 				</div>
 			</div>
 			<!--p id="Selection" class="toggleControl">Selection</p-->
@@ -66,7 +76,9 @@
 					<div id="mainarea" >
 						<figure id="picframe">
 							<!--img id="mainImage" style="image-orientation: from-image;"/-->
+							<a href="">
 							<img id="mainImage"/>
+							</a>
 							<figure-caption id="imageinfo" ></figure-caption>
 						</figure>
 					</div>

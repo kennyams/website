@@ -1,3 +1,7 @@
+<?php
+//	include "session.php";
+//	$_SESSION['started']=true;
+?>
 <header>
 	<div id="me" class="headerpic">
 		<img class="headerpic" src="/staticimg/me.jpg"/>
@@ -9,8 +13,15 @@
 			<img id="titleimg" src="/staticimg/guildford.jpg"/>
 			<h1 id="intro">Kens Pub</h1>
 			<h2 id="pagetitle"></h2>
-			<!--p>I am a Software engineer based in Guildford(UK)</p-->
-			<!--p>Welcome</p-->
+			<a id="login-button" ms-hide-element="true" href="/login" class="button logout login w-button">
+<?php
+	if(isset($_SESSION['name'])){
+		echo $_SESSION['name'];
+	}else{
+		echo "Login";
+	}
+?>
+			</a>
 	</div>
 	<script>
 		$(function() {
@@ -21,19 +32,19 @@
 					var hrf = "/";
 					switch(id){
 						case "m_home":
-							hrf="/index.php";
+							hrf="/index";
 							break;
 						case "m_blog":
 							hrf="/wp";
 							break;
 						case "m_plants":
-							hrf="/plants/index.php";
+							hrf="/plants/index";
 							break;
 						case "m_allotment":
 							hrf="/allotment";
 							break;
 						case "m_moles":
-							hrf="/allotment/moles.php";
+							hrf="/allotment/moles";
 							break;
 						case "m_cv":
 							hrf="/cvs/cv.html";
@@ -76,5 +87,6 @@
 			<li><div id="m_cv">CV</div></li>
 		</ul>
 	</nav>
+
 </header>
 

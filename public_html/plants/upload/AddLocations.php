@@ -30,8 +30,6 @@
 		}
 
 		disconnect();
-		$my->close();
-		$my=null;
 		$my=connect();
 		print_r($my);
 		foreach($images as $q){

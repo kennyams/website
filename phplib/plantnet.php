@@ -1,6 +1,8 @@
 <?php
-include("$_SERVER[DOCUMENT_ROOT]/../ssl/keys/plantnetkey.php");
-echo $api_key;
+	$root=$_SERVER["DOCUMENT_ROOT"];
+	include "$root/session.php";
+	include("$root/../ssl/keys/plantnetkey.php");
+#echo $api_key;
 function plantdata($plant){
 	global $api_key;
 	$inipath = php_ini_loaded_file();
@@ -28,10 +30,13 @@ function plantdata($plant){
 	}
 	#$filename=$_SERVER['DOCUMENT_ROOT']."/../phplib/testdata.txt";
 	#$jsonstr = file_get_contents($filename);
-	echo "<p>plantdata $jsonstr</p>";
 	$respjson = json_decode($jsonstr);
-	print_r($respjson);
 	$results=$respjson->{'results'}[0];
-	return $results;
+	if($results->{'score'}>0.2){
+		return $results;
+	}else{
+		echo "<p>low confidence</p>";
+		return null;
+	}
 }
 ?>

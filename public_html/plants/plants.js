@@ -68,9 +68,11 @@
 
 	function locate(src){
 		var pic = document.getElementById("mainImage");
+		var anc = pic.parentNode;
 		var imginfo = document.getElementById("imageinfo");
 		var path=src.currentTarget.dataset.path;
 		pic.src=path;
+		anc.href=`image?url=${path}`;
 		try{
 		var plantData = JSON.parse(atob(src.currentTarget.dataset.plantType));
 			imginfo.innerText=plantData.family;

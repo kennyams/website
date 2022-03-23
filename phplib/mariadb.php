@@ -23,6 +23,7 @@ function connect(){
 function disconnect(){
 	global $my;
 	$my->close();
+	$my=null;
 }
 function getPoly($data){
 	$x1 = $data->_southWest->lat;
@@ -37,10 +38,10 @@ function putPlants($family,$genus,$species,$common,$file,$my=null){
 	echo "<tr><td>$family</td></tr>";
 	$my=connect();
 	if (
-		ctype_space($family) or 
-		ctype_space($genus) or 
-		ctype_space($species) or 
-		ctype_space($common) or 
+		ctype_space($family) or
+		ctype_space($genus) or
+		ctype_space($species) or
+		ctype_space($common) or
 		ctype_space($file)
 	){
 		return;
@@ -161,7 +162,7 @@ function create_tables(){
 		id INT NOT NULL AUTO_INCREMENT,
 		name VARCHAR(100),
 		PRIMARY KEY(id),
-		CONSTRAINT unique_family UNIQUE(name) 
+		CONSTRAINT unique_family UNIQUE(name)
 	);");
 	if($my->error)
 		echo"<p>myerror $my->error</p>";
@@ -172,7 +173,7 @@ function create_tables(){
 		name VARCHAR(100),
 		PRIMARY KEY(id),
 		FOREIGN KEY ( family_id ) REFERENCES Family(id) ON DELETE CASCADE,
-		CONSTRAINT unique_genus UNIQUE(name) 
+		CONSTRAINT unique_genus UNIQUE(name)
 	);");
 	if($my->error)
 		echo"<p>myerror $my->error</p>";
@@ -183,7 +184,7 @@ function create_tables(){
 		name VARCHAR(100),
 		PRIMARY KEY(id),
 		FOREIGN KEY ( genus_id ) REFERENCES Genus(id) ON DELETE CASCADE,
-		CONSTRAINT unique_genus UNIQUE(name) 
+		CONSTRAINT unique_genus UNIQUE(name)
 	);");
 	if($my->error)
 		echo"<p>myerror $my->error</p>";
@@ -191,14 +192,14 @@ function create_tables(){
 	$code = $my->query("CREATE TABLE IF NOT EXISTS Plants (
 		id INT NOT NULL AUTO_INCREMENT,
 		family INT NOT NULL,
-		genus INT NOT NULL, 
+		genus INT NOT NULL,
 		species INT NOT NULL,
 		common VARCHAR(100),
 		PRIMARY KEY(id),
 		FOREIGN KEY ( family ) REFERENCES Family(id) ON DELETE CASCADE,
 		FOREIGN KEY ( genus ) REFERENCES Genus(id) ON DELETE CASCADE,
 		FOREIGN KEY ( species ) REFERENCES Species(id) ON DELETE CASCADE,
-		CONSTRAINT UNIQUE KEY( family, genus, species) 
+		CONSTRAINT UNIQUE KEY( family, genus, species)
 	);");
 	if($my->error)
 		echo"<p>myerror $my->error</p>";
@@ -289,7 +290,7 @@ function getGenus($families){
 		printf("Connection Error: %s\n" , mysqli_connect_error());
 	}
 	$query="CALL GetGenus ('$families');";
-	if($result = $my->query($query)){ 
+	if($result = $my->query($query)){
 		while($row = $result->fetch_assoc()){
 			$genus=new stdClass();
 			$genus->genus=$row['name'];
@@ -309,7 +310,7 @@ function getSpecies($genus){
 		printf("Connection Error: %s\n" , mysqli_connect_error());
 	}
 	$query="CALL GetSpecies ('$genus');";
-	if($result = $my->query($query)){ 
+	if($result = $my->query($query)){
 		while($row = $result->fetch_assoc()){
 			$species=new stdClass();
 			$species->species=$row['name'];
@@ -352,7 +353,7 @@ function GetImagesM($post){
 	$plants=array();
 	//print_r($poly);
 	$query="CALL GetPictures('$p', (ST_GeomFromText('$poly')));";
-	if($result = $my->query($query)){ 
+	if($result = $my->query($query)){
 		while($row = $result->fetch_assoc()){
 			//$p=print_r($row['fname'],True);
 			$plant=new stdClass();
@@ -374,6 +375,70 @@ function GetImagesM($post){
 	}
 	$my->close();
 	return $pinfo;
+}
+
+function AddUser($name,$email, $hash, $uuid){
+	error_log("AddUser");
+	$my=connect();
+	$query="CALL AddUser('$name','$email','$hash','$uuid');";
+	if($result = $my->query($query)){
+	}else{
+		error_log("AddUser error");
+	}
+	disconnect();
+}
+function RegisterUser($uuid){
+	error_log("RegisterUser");
+	$my=connect();
+	$query="CALL RegisterUser('$uuid');";
+	if($result = $my->query($query)){
+		$row = $result->fetch_assoc();
+		disconnect();
+		return($row['result']=='success');
+	}else{
+		error_log("RegisterUser error");
+	}
+	disconnect();
+}
+function IsUser($email){
+	error_log("IsUser");
+	$my=connect();
+	$query="CALL IsUser('$email');";
+	if($result = $my->query($query)){
+		$row = $result->fetch_assoc();
+		disconnect();
+		return($row['result']=='exists');
+	}else{
+		error_log("IsUser error");
+	}
+	disconnect();
+}
+function CheckUser($email, $hash){
+	error_log("CheckUser");
+	$my=connect();
+	$query="CALL CheckUser('$email', '$hash');";
+	if($result = $my->query($query)){
+		error_log("CheckUser ok");
+		while($row = $result->fetch_assoc()){
+			error_log("from db ${row['result']}");
+			disconnect();
+			return($row['result']);
+		}
+	}else{
+		error_log("CheckUser error");
+	}
+	disconnect();
+}
+function GetPermissions($email){
+	error_log("GetPermissions");
+	$my=connect();
+	$query="CALL GetPermissions('$email');";
+	if($result = $my->query($query)){
+		$row = $result->fetch_assoc();
+			disconnect();
+			return($row);
+	}
+	disconnect();
 }
 ?>
 
