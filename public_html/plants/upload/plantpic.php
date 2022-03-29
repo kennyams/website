@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php 
 $root=$_SERVER["DOCUMENT_ROOT"];
 include "$root/session.php";
@@ -8,6 +7,7 @@ include "$root/../phplib/mariadb.php";
 		die;
 	}
 ?>
+<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <html>

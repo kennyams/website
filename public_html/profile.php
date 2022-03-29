@@ -1,7 +1,8 @@
-<!DOCTYPE html>
+<?php 
+$root=$_SERVER["DOCUMENT_ROOT"];
+include "$root/session.php";
+?>
 <?php
-	$root=$_SERVER["DOCUMENT_ROOT"];
-	include "$root/session.php";
 	foreach($_SESSION as $key => $value){
 		error_log( "$key, $value");
 	}
@@ -13,6 +14,7 @@
 		header("Location: /");
 	}
 ?>
+<!DOCTYPE html>
 <html>
 	<head>
 	<meta charset="utf-8">

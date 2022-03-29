@@ -1,8 +1,8 @@
-<!DOCTYPE html>
 <?php 
 $root=$_SERVER["DOCUMENT_ROOT"];
 include "$root/session.php";
 ?>
+<!DOCTYPE html>
 <html>
 	<head>
 		<?php
@@ -52,11 +52,11 @@ include "$root/session.php";
 					<input class="filterOptionsOption" id="onmap" form="filter" type="checkbox" value="map"/>
 					<label  >Find Place</label>
 					<input class="filterOptionsOption" id="i_place" form="place" type="text" value="Surrey"/>
-					<div></div>
-
+				</div>
+				<div>
 <?php
 					$p=GetPermissions($_SESSION["email"]);
-					if($p["upload_images"]=="1"){
+					if(isset($p["upload_images"]) && $p["upload_images"]=="1"){
 						echo '<form id="upload" action="/plants/upload/plantpic"> </form>';
 						echo '<input class="filterOptionsOption" form="upload" type="submit" value="Upload"/>';
 					}

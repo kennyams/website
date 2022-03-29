@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php 
 	$root=$_SERVER["DOCUMENT_ROOT"];
 	include "$root/session.php";
@@ -10,7 +9,6 @@
 		session_set_cookie_params(60);
 		error_log("session started");
 	}
-	$root=$_SERVER['DOCUMENT_ROOT'];
 	include("$root/../phplib/mariadb.php");
 	$name="";
 	$email="";
@@ -26,7 +24,6 @@
 		$hash=password_hash($password,null);
 		$h=CheckUser($email,$hash);
 		error_log($h);
-		error_log("$name,$password,$hash,$h");
 		$ok=password_verify($password,$h);
 		error_log($ok);
 		if($ok){
@@ -60,8 +57,8 @@
 			</head>
 			<body>
 				<p>Please follow link to complete registration</p>
-				<!--a href=\"https://pub.me.uk/completereg.php?id=$uuid\">Register</a-->
-				<a href=\"/completereg.php?id=$uuid\">Register</a>
+				<a href=\"https://pub.me.uk/completereg.php?id=$uuid\">Register</a>
+				<!--a href=\"/completereg.php?id=$uuid\">Register</a-->
 			</body>
 		</html>
 		";
@@ -80,6 +77,7 @@
 		}
 	}	
 ?>
+<!DOCTYPE html>
 <html>
 	<head>
 	<meta charset="utf-8">
