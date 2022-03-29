@@ -1,11 +1,12 @@
-var scale=10000;
+var scale=1;
 
-function normalize(outline,m){
-    let w = (m.maxx - m.minx)/100;                     
-    let h = (m.maxy - m.miny)/75;                      
-    outline.forEach(function(c){                       
-        c.x=(c.x-m.minx)/w;                            
-        c.y=(c.y-m.miny)/h;                            
+function normalize(outline,m,x,y){
+    let w = (m.maxx - m.minx)/x;
+    let h = (m.maxy - m.miny)/y;
+    outline.forEach(function(c){
+        c.x=(c.lon-m.minx)/w;
+        c.y=(c.lat-m.miny)/h;
+		c.y=y-c.y;
     });
 }
 
@@ -14,18 +15,33 @@ function minmax(outlines){
     let miny=90 * scale;
     let maxx=-180 * scale;
     let maxy=-90 * scale;
-    outlines.forEach(function(o){                
-	//	console.log(o);
-        o.forEach(function(c){                   
-            minx=(c.x<minx?c.x:minx);                  
-            miny=(c.y<miny?c.y:miny);                  
-            maxx=(c.x>maxx?c.x:maxx);
-            maxy=(c.y>maxy?c.y:maxy);                  
-        });                                            
+    outlines.forEach(function(o){
+        o.forEach(function(c){
+            minx=(c.lon<minx?c.lon:minx);
+            miny=(c.lat<miny?c.lat:miny);
+            maxx=(c.lon>maxx?c.lon:maxx);
+            maxy=(c.lat>maxy?c.lat:maxy);
+        });
     });
     return {minx:minx,miny:miny,maxx:maxx,maxy:maxy};
 
-};
+}
+
+function createRoute(w){
+	var outline = w.path;
+	var id=w.id;
+	var name=w.name;
+	console.log("createRoute");
+	//var g = makeSVG("g",{});
+	var t = makeSVG("text",{});
+	var tp = makeSVG("textPath",{"href":`#${id}`,"side":"right","method":"stretch","spacing":"auto","startOffset":"50%"});
+	tp.innerHTML=name;
+	//g.appendChild(t);
+	t.appendChild(tp);
+	console.log(t);
+	return t;
+
+}
 
 function createPath(outline){
     var first=true;
@@ -45,3 +61,22 @@ function makeSVG(tag, attrs) {
     return el;
 }
 
+class Location{
+	constructor(p,callback){
+		var p1,p2;
+		$(p).submit(function(event){
+			event.preventDefault();
+			place=$(p+" input").val();
+			$.get("https://nominatim.openstreetmap.org/search",{q:place,format:"json"},function(data){
+				var boxcoords = data[0].boundingbox
+				console.log(boxcoords);
+				var p1 =[boxcoords[0],boxcoords[2]];
+				var p2 =[boxcoords[1],boxcoords[3]];
+				callback([p1,p2]);
+			});
+		});
+	}
+	getLocation(textbox_id){
+		return [p1,p2];
+	}
+}
