@@ -441,4 +441,3 @@ function GetPermissions($email){
 	disconnect();
 }
 ?>
-

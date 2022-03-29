@@ -2,22 +2,22 @@ figure{
 	border:solid 5pt grey;
 }
 main{
-	position:absolute;
-	width:100%;
+	display:flex;
+	flex-direction:column;
 }
 #map{
-	position:absolute;
+	position:relative;
 	width:100%;
-	height:100%;
 }
 #svg{
-	width:600px;
+	width:450px;
 	height:450px;
 	display:block;
-	position:absolute;
+	position:relative;
 	border:solid 1pt grey;
-	background-color:#E0DFDF;
+	background-color:#6060C4;
 	z-index:1;
+	transform-origin:center center;
 }
 svg{
 	width:100%;
@@ -25,19 +25,14 @@ svg{
 }
 #debug{
 	position:relative;
+	width:100vw;
+	height:400px;
 }
-#allotment-content
-{
-	display:flex;
-	flex-direction:column;
-	position:absolute;
-	overflow:scroll;
+textarea{
+	height:100%;
+	width:100%;
 }
 
-section#mainarea{
-	grid-area:main;
-	position:relative;
-}
 #map{
 	visibility:visible;
 }
@@ -57,14 +52,14 @@ path.tertiary{
 	stroke:black;
 }
 path.primary{
-	stroke:white;
-	stroke-width:.2;
+	stroke:#f9b29c;
+	stroke-width:.4;
 }
 path.pedestrian{
 	stroke:orange;
 }
 path.footway{
-	stroke:purple;
+	stroke:#ccd98f;
 }
 path.unclassified{
 	stroke:blue;
@@ -76,5 +71,9 @@ path.cycleway{
 	stroke:turquoise;
 }
 path.bridleway{
-	stroke:gold;
+	stroke:red;
+}
+path.rail{
+	stroke:black;
+	stroke-width:.2;
 }
