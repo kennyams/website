@@ -160,6 +160,7 @@
 		if($('#onmap').is(":checked")){
 			fdata.append('map',JSON.stringify(mapbounds));
 		}
+		$("#loading").show();
 		$.ajax({ url:"/plants/plantapi.php?images",
 				method:"POST",
 				data:fdata,
@@ -167,7 +168,6 @@
 				contentType:false,
 				success:function(x,y,z)
 				{
-					$("#loading").hide();
 					$('#piccontainer').empty();
 					var res=JSON.parse(x);
 					var div = document.getElementById('piccontainer');
@@ -201,6 +201,7 @@
 				$image=$("#piccontainer img");
 				$image.addClass("thumb");
 				$image.click(locate);
+				$("#loading").hide();
 				}
 		});
 	}
