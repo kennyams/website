@@ -28,6 +28,9 @@
 					updateThumbs(null);
 				}
 		});
+		$("#i_place").on('input',function(event){
+			this.value = this.value.replace(/[^a-z ,]/, '');
+		});
 		$("#place").submit(function(event){
 			event.preventDefault();
 			place=$("#i_place").val();
@@ -175,6 +178,8 @@
 					for (var i in res.pics){
 						var picdata = res.pics[i];
 						loc=picdata.loc;
+						if(loc==null)
+							continue;
 						loc = loc.split(',');
 						marker = L.marker(loc).addTo(Markers);
 						marker.id=i;

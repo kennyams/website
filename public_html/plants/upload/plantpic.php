@@ -1,7 +1,6 @@
 <?php 
 $root=$_SERVER["DOCUMENT_ROOT"];
 include "$root/session.php";
-include "$root/../phplib/mariadb.php";
 	if (GetPermissions($_SESSION["email"])["upload_images"]!=="1"){
 		header("Location: /");
 		die;

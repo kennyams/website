@@ -1,6 +1,5 @@
 <?php
-	include "session.php";
-//	$_SESSION['started']=true;
+	include_once "session.php";
 ?>
 <header>
 	<div id="me" class="headerpic">

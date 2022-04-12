@@ -2,7 +2,6 @@
 	$root=$_SERVER["DOCUMENT_ROOT"];
 	include "$root/session.php";
 	include_once "$root/../phplib/log.php";
-	include "$root/../phplib/mariadb.php";
 	include "$root/../phplib/plantnet.php";
 	include "$root/../phplib/imglocation.php";
 	if (GetPermissions($_SESSION["email"])["upload_images"]!=="1"){

@@ -1,6 +1,6 @@
 <?php
 $my=null;
-include("$_SERVER[DOCUMENT_ROOT]/../ssl/creds/dbpass.php");
+include("${_SERVER["DOCUMENT_ROOT"]}/../ssl/creds/dbpass.php");
 function connect(){
 	global $my;
 	if($my != null){
@@ -437,6 +437,47 @@ function GetPermissions($email){
 		$row = $result->fetch_assoc();
 			disconnect();
 			return($row);
+	}
+	disconnect();
+}
+function NewCookie($uuid){
+	error_log("NewCookie");
+	$my=connect();
+	$query="CALL NewCookie('$uuid');";
+	if($result = $my->query($query)){
+		disconnect();
+		return($result);
+	}
+	disconnect();
+}
+function Cookie($uuid){
+	error_log("Cookie");
+	$my=connect();
+	$query="CALL Cookie('$uuid');";
+	if($result = $my->query($query)){
+		$row = $result->fetch_assoc();
+			disconnect();
+			return($row);
+	}
+	disconnect();
+}
+function OverPassCookie($uuid,$scale,$place){
+	error_log("OverPassCookie");
+	$my=connect();
+	$query="CALL OverPassCookie('$uuid','$scale','$place');";
+	if($result = $my->query($query)){
+		disconnect();
+		return($result);
+	}
+	disconnect();
+}
+function deleteOldCookies(){
+	error_log("Cookie");
+	$my=connect();
+	$query="CALL DeleteOldCookies();";
+	if($result = $my->query($query)){
+			disconnect();
+			return($result);
 	}
 	disconnect();
 }

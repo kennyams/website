@@ -25,7 +25,6 @@ include "$root/session.php";
 		<?php
 			$root=$_SERVER["DOCUMENT_ROOT"];
 			include "$root/header.php";
-			include "$root/../phplib/mariadb.php";
 		?>
 		<!--p id="FilterSettings" class="toggleControl">Settings</p-->
 		<main>

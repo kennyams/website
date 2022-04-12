@@ -31,14 +31,14 @@ function createRoute(w){
 	var outline = w.path;
 	var id=w.id;
 	var name=w.name;
-	console.log("createRoute");
+	//console.log("createRoute");
 	//var g = makeSVG("g",{});
-	var t = makeSVG("text",{});
-	var tp = makeSVG("textPath",{"href":`#${id}`,"side":"right","method":"stretch","spacing":"auto","startOffset":"50%"});
+	var t = makeSVG("text",{"id":`t_${id}`});
+	var tp = makeSVG("textPath",{"id":`tp_${id}`, "href":`#${id}`,"side":"left","method":"stretch","spacing":"auto","startOffset":"0%"});
 	tp.innerHTML=name;
 	//g.appendChild(t);
 	t.appendChild(tp);
-	console.log(t);
+	//console.log(t);
 	return t;
 
 }
@@ -69,7 +69,7 @@ class Location{
 			place=$(p+" input").val();
 			$.get("https://nominatim.openstreetmap.org/search",{q:place,format:"json"},function(data){
 				var boxcoords = data[0].boundingbox
-				console.log(boxcoords);
+				//console.log(boxcoords);
 				var p1 =[boxcoords[0],boxcoords[2]];
 				var p2 =[boxcoords[1],boxcoords[3]];
 				callback([p1,p2]);

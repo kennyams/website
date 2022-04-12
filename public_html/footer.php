@@ -5,5 +5,6 @@
 	<div>
 	<a href="mailto:admin@pub.me.uk?subject=About your website">email me</a>
 	</div>
+	<p>This site uses cookies to store settings</p>
 </footer>
 

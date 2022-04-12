@@ -1,6 +1,6 @@
 <?php 
 $root=$_SERVER["DOCUMENT_ROOT"];
-include "$root/session.php";
+include_once "$root/session.php";
 ?>
 <!DOCTYPE html>
 <html>
@@ -22,38 +22,42 @@ include "$root/session.php";
 			$coords->x=$_GET['x'];
 			$coords->y=$_GET['y'];
 		}else{
-			$coords->x=51.24658;
-			$coords->y=-0.58364;
+			//$coords->x=51.24658;
+			//$coords->y=-0.58364;
 		}
+		$update_settings=false;
 		if(array_key_exists('scale',$_GET)){
 			$coords->scale=$_GET['scale'];
-		} else{
-			$coords->scale=0.1;
+			$update_settings=true;
+		}else if(array_key_exists('overpass_scale',$settings)){
+			$coords->scale=$settings['overpass_scale'];
 		}
 		if(array_key_exists('place',$_GET)){
 			$coords->place=$_GET['place'];
-		} else{
-			$coords->place=null;
+			$update_settings=true;
+		}else if(array_key_exists('overpass_place_name',$settings)){
+			$coords->place=$settings['overpass_place_name'];
 		}
+		$place=$coords->place;
+		$scale=$coords->scale;
+		if($update_settings){
+			OverPassCookie($uuid,$scale,$place);
+		}
+	
 		error_log(print_r($coords,true));
 		$res = overpass($coords);
 		echo "$res"."['paths']";
+		
 ?>
 ;
 	
 	$(function(){
 		var x=100;
 		var y=100;
-		console.log(ways);
-		//var theLocation = new Location("#place",function(coords){
-		//	console.log(coords);
-		//});
+		//console.log(ways);
 		var map = document.getElementById("map");
-		//var clip = makeSVG("clippath",{});
-		//var svg = makeSVG("svg",{"transform":"rotate(-90) translate(100,-50)"});
 		var svg = makeSVG("svg",{"id":"svg","viewBox":`0 0 ${x} ${y}`,"font-size":"2px"});
 		map.appendChild(svg);
-		//svg.appendChild(clip);
 		var w = ways.map(function(c){
 			return(c.path);
 		});
@@ -62,8 +66,15 @@ include "$root/session.php";
 			normalize(w.path,m,x,y);
 			var p = createPath(w.path);
 			svg.appendChild(makeSVG("path",{"id":w.id,  "d":p, "class":w.highway, "fill":"none", "stroke":"green", "stroke-width":".1"}));
+			p = document.getElementById(w.id);
+			var plen=p.getTotalLength();
+			//console.log(plen);
 			var p = createRoute(w);
 			svg.appendChild(p);
+			var t = document.getElementById(`tp_${w.id}`);
+			var tlen = t.getComputedTextLength();
+			//console.log(tlen);
+			t.setAttribute("startOffset",`${(plen-tlen)/2}px`);
 		});
 	});
 
@@ -72,21 +83,28 @@ include "$root/session.php";
     <body>
 		<?php
 			$root=$_SERVER["DOCUMENT_ROOT"];
-			include "$root/header.php";
+			include_once "$root/header.php";
 		?>
         <main>
 			<form id="place" method="GET" > 
 				<label>Find Place</label>
-				<input id="i_place" name="place"  form="place" type="text" value="Surrey"/>
+<?php
+				echo "<input id=\"i_place\" name=\"place\"  form=\"place\" type=\"text\" value=\"$place\">"
+?>
 				<label>Scale</label>
-				<input id="i_scale" name="scale"  form="place" type="text" value=".5"/>
-				<input form="place" type="submit" value="Go"/>
+<?php
+				echo "<input id=\"i_scale\" name=\"scale\"  form=\"place\" type=\"text\" value=\"$scale\">"
+?>
+				<input form="place" type="submit" value="Go">
 			</form>
 			<div id="findplace"></div>
 			<div id="map"></div>
 			<div id="debug">
 			</div>
         </main>
+		<?php
+			include "$root/footer.php";
+		?>
 		<script>
 			$("#pagetitle").html("<p>Prototype of SVG mapping using overpass api to the openstreetmap database</p>");
 		</script>

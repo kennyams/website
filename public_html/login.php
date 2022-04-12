@@ -1,6 +1,6 @@
 <?php 
 	$root=$_SERVER["DOCUMENT_ROOT"];
-	include "$root/session.php";
+	include_once "$root/session.php";
 	error_log("login.php");
 	$password_fail=false;
 	$ss=session_status();
@@ -9,7 +9,6 @@
 		session_set_cookie_params(60);
 		error_log("session started");
 	}
-	include("$root/../phplib/mariadb.php");
 	$name="";
 	$email="";
 	if(isset($_SESSION["name"])){
