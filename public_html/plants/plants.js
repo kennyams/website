@@ -1,6 +1,12 @@
 	var ori;
 	var Markers;
 	var mymap;
+	var mapLoaded=false;
+	var debug=false;
+	function log(msg){
+		if(debug)
+			console.log(msg);
+	}
 	$ ( document ).ajaxStart(function(){
 		$('#piccontainer').empty();
 		$("#loading").show();
@@ -18,6 +24,7 @@
 				autoSize:true,
 				showButtonPanel:true,
 				onSelect:function(dateText){
+					log("frompicker");
 					updateThumbs(null);
 				}
 		});
@@ -25,6 +32,7 @@
 			dateFormat:"yy-mm-dd",
 				autoSize:true,
 				onSelect:function(dateText){
+					log("topicker");
 					updateThumbs(null);
 				}
 		});
@@ -36,14 +44,14 @@
 			place=$("#i_place").val();
 			$.get("https://nominatim.openstreetmap.org/search",{q:place,format:"json"},function(data){
 				boxcoords = data[0].boundingbox
-				console.log(boxcoords);
+				log(boxcoords);
 				p1 =[boxcoords[0],boxcoords[2]];
 				p2 =[boxcoords[1],boxcoords[3]];
 				mymap.fitBounds([p1,p2]);
 			});
 		});
 		setupFilters();
-		//console.log = function(){}
+		//log = function(){}
 		var lat = 51.476852;
 		var lon = 0.00;
 		mymap = L.map('mapid' , {
@@ -52,11 +60,24 @@
 		});
 //		var marker;
 		mymap.on('moveend', function() { 
-			updateThumbs(null);
+			if(mapLoaded){
+				log("moveend");
+				updateThumbs(null);
+			}
 		})
+		//mymap.on('zoomend', function() { 
+		//	log("zoomend");
+		//	updateThumbs(null);
+		//})
+		//mymap.on('dragend', function() { 
+		//	log("dragend");
+		//	updateThumbs(null);
+		//})
 
 		mymap.on('load', function() { 
-			updateThumbs(null);
+			log("load");
+			mapLoaded=true;
+			//updateThumbs(null);
 		});
 
 		L.tileLayer('https://b.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -65,11 +86,11 @@
 			id: '"openstreetmap".',
 		}).addTo(mymap);
 		mymap.setView([lat, lon], 13);
-		//updateThumbs();
 
 	});
 
 	function locate(src){
+		log("locate");
 		var pic = document.getElementById("mainImage");
 		var anc = pic.parentNode;
 		var imginfo = document.getElementById("imageinfo");
@@ -206,6 +227,11 @@
 		});
 	}
 
+	//	mymap.on('load', function() { 
+	//		log("load");
+	//	updateThumbs(null);
+	//	});
+
 	let getFamilies = new Promise((resolve,reject) =>
 	{
 		$.ajax({ url:"/plants/plantapi.php?family",
@@ -221,7 +247,7 @@
 					option.selected=false;
 					select.append(option);
 				}
-				resolve("it is done");
+				resolve("getFamilies");
 			}
 		});
 
@@ -239,12 +265,13 @@
 				//$("#DateFromSelect").text(dd);
 
 				d = $("#topicker").datepicker("setDate",new Date());
-				resolve("it is done");
+				resolve("getFirstDate");
 			}
 		});
 	});
 
-	Promise.all([getFirstDate,getFamilies]).then(()=>{
+	Promise.all([getFirstDate,getFamilies]).then((values)=>{
+		log(`promise ${values}`);
 		updateThumbs();
 	});
 	function setupFilters()
@@ -268,6 +295,8 @@
 					$('#genusSelected').append("<option>"+genus['genus']+"</option>");
 				});
 			}});
+
+			log("promise");
 			updateThumbs();
 		});
 		$("#genusSelected").change(function(){
@@ -291,9 +320,11 @@
 						$('#speciesSelected').append("<option>Error</option>");
 					}
 			});
+			log("genusSelected");
 			updateThumbs();
 		});
 		$("#speciesSelected").change(function(){
+			log("speciesSelected");
 			updateThumbs();
 		});
 
