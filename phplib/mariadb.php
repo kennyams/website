@@ -14,10 +14,6 @@ function connect(){
 		printf("Connection Error: %s\n" , mysqli_connect_error());
 		return null;
 	}
-	#$my->query("use plants;");
-	//$my->query("use pubmeuk_wp789;");
-
-	//error_log("my connect out");
 	return $my;
 }
 function disconnect(){
@@ -413,14 +409,13 @@ function IsUser($email){
 	}
 	disconnect();
 }
-function CheckUser($email, $hash){
+function CheckUser($email, $hash, $cookieid){
 	error_log("CheckUser");
 	$my=connect();
-	$query="CALL CheckUser('$email', '$hash');";
+	$query="CALL CheckUser('$email', '$hash', '$cookieid');";
 	if($result = $my->query($query)){
 		error_log("CheckUser ok");
 		while($row = $result->fetch_assoc()){
-			error_log("from db ${row['result']}");
 			disconnect();
 			return($row['result']);
 		}
@@ -428,6 +423,22 @@ function CheckUser($email, $hash){
 		error_log("CheckUser error");
 	}
 	disconnect();
+}
+function SetUserIdOnCookie($email,$cookieid){
+	error_log("SetUserIdOnCookie");
+	$my=connect();
+	$query="CALL SetUserIdOnCookie('$email', '$cookieid');";
+	if($result = $my->query($query)){
+		error_log("SetUserIdOnCookie ok");
+		while($row = $result->fetch_assoc()){
+			disconnect();
+			return($row['result']);
+		}
+	}else{
+		error_log("SetUserIdOnCookie error");
+	}
+	disconnect();
+
 }
 function GetPermissions($email){
 	error_log("GetPermissions");

@@ -16,20 +16,17 @@
 		die();
 	}
 	if(isset($_POST['login'])){
-		error_log("logging in");
 		$name=$_POST['name'];
 		$email=$_POST['email'];
 		$password=$_POST['password'];
 		$hash=password_hash($password,null);
-		$h=CheckUser($email,$hash);
-		error_log($h);
+		$h=CheckUser($email,$hash,$uuid);
 		$ok=password_verify($password,$h);
-		error_log($ok);
 		if($ok){
 			$_SESSION["name"]=$name;
 			$_SESSION["email"]=$email;
-			error_log("ok");
 			header('Location: /');
+			SetUserIdOnCookie($email,$uuid);
 			die();
 		}else{
 			$password_fail=true;
@@ -47,7 +44,7 @@
 		}
 		$to="admin@pub.me.uk";
 		$subject="Confirm Registration";
-		$uuid=bin2hex(random_bytes(16));
+		$uuid_reg=bin2hex(random_bytes(16));
 
 		$message = "
 		<html>
@@ -56,14 +53,14 @@
 			</head>
 			<body>
 				<p>Please follow link to complete registration</p>
-				<a href=\"https://pub.me.uk/completereg.php?id=$uuid\">Register</a>
-				<!--a href=\"/completereg.php?id=$uuid\">Register</a-->
+				<a href=\"https://pub.me.uk/completereg.php?id=$uuid_reg\">Register</a>
+				<!--a href=\"/completereg.php?id=$uuid_reg\">Register</a-->
 			</body>
 		</html>
 		";
 		//echo $message;
 		$hash=password_hash($password,null);
-		AddUser($name,$email,$hash,$uuid);
+		AddUser($name,$email,$hash,$uuid_reg);
 		$headers = "MIME-Version: 1.0" . "\r\n";
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 		$headers .="From: admin@pub.me.uk"."\r\n";
