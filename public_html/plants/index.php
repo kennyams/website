@@ -54,10 +54,12 @@ include "$root/session.php";
 				</div>
 				<div>
 <?php
-					$p=GetPermissions($_SESSION["email"]);
-					if(isset($p["upload_images"]) && $p["upload_images"]=="1"){
-						echo '<form id="upload" action="/plants/upload/plantpic"> </form>';
-						echo '<input class="filterOptionsOption" form="upload" type="submit" value="Upload"/>';
+					if(isset($_SESSION["email"])){
+						$p=GetPermissions($_SESSION["email"]);
+						if(isset($p["upload_images"]) && $p["upload_images"]=="1"){
+							echo '<form id="upload" action="/plants/upload/plantpic"> </form>';
+							echo '<input class="filterOptionsOption" form="upload" type="submit" value="Upload"/>';
+						}
 					}
 ?>
 				</div>

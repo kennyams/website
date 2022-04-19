@@ -50,7 +50,6 @@
 				mymap.fitBounds([p1,p2]);
 			});
 		});
-		setupFilters();
 		//log = function(){}
 		var lat = 51.476852;
 		var lon = 0.00;
@@ -58,6 +57,7 @@
 			//dragging: !L.Browser.mobile,
 			//tap: !L.Browser.mobile
 		});
+		setupFilters();
 //		var marker;
 		mymap.on('moveend', function() { 
 			if(mapLoaded){
