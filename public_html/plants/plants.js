@@ -3,6 +3,7 @@
 	var mymap;
 	var mapLoaded=false;
 	var debug=false;
+	var map_zoom_level=13;
 	function log(msg){
 		if(debug)
 			console.log(msg);
@@ -18,6 +19,13 @@
 		});
 		$("#DateToSelect").on("click",function(){
 			$("#todate").toggle("fade",500);
+		});
+
+		var lat = 51.476852;
+		var lon = 0.00;
+		mymap = L.map('mapid' , {
+			//dragging: !L.Browser.mobile,
+			//tap: !L.Browser.mobile
 		});
 		$("#frompicker").datepicker({
 			dateFormat:"yy-mm-dd",
@@ -39,6 +47,8 @@
 		$("#i_place").on('input',function(event){
 			this.value = this.value.replace(/[^a-z ,]/, '');
 		});
+
+
 		$("#place").submit(function(event){
 			event.preventDefault();
 			place=$("#i_place").val();
@@ -51,12 +61,6 @@
 			});
 		});
 		//log = function(){}
-		var lat = 51.476852;
-		var lon = 0.00;
-		mymap = L.map('mapid' , {
-			//dragging: !L.Browser.mobile,
-			//tap: !L.Browser.mobile
-		});
 		setupFilters();
 //		var marker;
 		mymap.on('moveend', function() { 
@@ -65,15 +69,6 @@
 				updateThumbs(null);
 			}
 		})
-		//mymap.on('zoomend', function() { 
-		//	log("zoomend");
-		//	updateThumbs(null);
-		//})
-		//mymap.on('dragend', function() { 
-		//	log("dragend");
-		//	updateThumbs(null);
-		//})
-
 		mymap.on('load', function() { 
 			log("load");
 			mapLoaded=true;
@@ -85,7 +80,50 @@
 			maxZoom: 18,
 			id: '"openstreetmap".',
 		}).addTo(mymap);
-		mymap.setView([lat, lon], 13);
+		mymap.setView([lat, lon], map_zoom_level);
+		let getFamilies = new Promise((resolve,reject) =>
+		{
+			$.ajax({ url:"/plants/plantapi.php?family",
+				success:function(x,y,z)
+				{
+					var res=JSON.parse(x);
+					var select = $('#familySelected');
+
+					for (var i in res){
+						var option = document.createElement("option");
+						option.value=res[i].family;
+						option.innerText=res[i].family;
+						option.selected=false;
+						select.append(option);
+					}
+					resolve("getFamilies");
+				}
+			});
+
+		});
+
+		let getFirstDate = new Promise((resolve,reject) =>
+		{
+			$.ajax({ url:"/plants/plantapi.php?firstdate",
+				success:function(x,y,z)
+				{
+					var date= JSON.parse(x);
+					$( "#frompicker" ).datepicker( "setDate", date );
+					//var d = $("#fromdate").datepicker("getDate");
+					//var dd = $.datepicker.formatDate("yy-mm-dd",d);
+					//$("#DateFromSelect").text(dd);
+
+					d = $("#topicker").datepicker("setDate",new Date());
+					resolve("getFirstDate");
+				}
+			});
+		});
+
+		Promise.all([getFirstDate,getFamilies]).then((values)=>{
+			log(`promise ${values}`);
+			updateThumbs();
+		});
+
 
 	});
 
@@ -108,7 +146,7 @@
 			if(! "marker" in window){
 				marker.remove();
 			}
-		mymap.setView([loc[0],loc[1]], 16);
+		mymap.setView([loc[0],loc[1]], map_zoom_level);
 		marker = L.marker([loc[0],loc[1]]).addTo(mymap);
 	}
 	function touchend(ev){
@@ -232,48 +270,6 @@
 	//	updateThumbs(null);
 	//	});
 
-	let getFamilies = new Promise((resolve,reject) =>
-	{
-		$.ajax({ url:"/plants/plantapi.php?family",
-			success:function(x,y,z)
-			{
-				var res=JSON.parse(x);
-				var select = $('#familySelected');
-
-				for (var i in res){
-					var option = document.createElement("option");
-					option.value=res[i].family;
-					option.innerText=res[i].family;
-					option.selected=false;
-					select.append(option);
-				}
-				resolve("getFamilies");
-			}
-		});
-
-	});
-
-	let getFirstDate = new Promise((resolve,reject) =>
-	{
-		$.ajax({ url:"/plants/plantapi.php?firstdate",
-			success:function(x,y,z)
-			{
-				var date= JSON.parse(x);
-				$( "#frompicker" ).datepicker( "setDate", date );
-				//var d = $("#fromdate").datepicker("getDate");
-				//var dd = $.datepicker.formatDate("yy-mm-dd",d);
-				//$("#DateFromSelect").text(dd);
-
-				d = $("#topicker").datepicker("setDate",new Date());
-				resolve("getFirstDate");
-			}
-		});
-	});
-
-	Promise.all([getFirstDate,getFamilies]).then((values)=>{
-		log(`promise ${values}`);
-		updateThumbs();
-	});
 	function setupFilters()
 	{
 
