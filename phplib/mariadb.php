@@ -119,134 +119,8 @@ function putPlants($family,$genus,$species,$common,$file,$my=null){
 	echo"</table>";
 	$my->close();
 }
-function create_sps(){
-	$my=connect();
-	$my->query("CREATE DEFINER=`ken`@`%` PROCEDURE `plants`.`FirstDate`() SELECT min(Images.`date` ) from Images;");
-	if($my->error)
-		echo"<td>create proc: $my->error</td>";
-	$my->close();
-}
-function create_tables(){
-	echo "<style>
-	table, th, td {
-  	border: 1px solid black;
-  	border-collapse: collapse;
-	</style>";
-	$my=connect();
-	echo "<p>create_tables</p>";
-
-	#$code = $my->query("DROP DATABASE plants");
-	#$code = $my->query("CREATE DATABASE IF NOT EXISTS plants");
-
-	$my->query("DROP TABLE IF EXISTS Images;");
-	if($my->error)
-		echo"<td>images: $my->error</td>";
-	$my->query("DROP TABLE IF EXISTS Plants;");
-	if($my->error)
-		echo"<td>family: $my->error</td>";
-	$my->query("DROP TABLE IF EXISTS Species;");
-	if($my->error)
-		echo"<td>error: $my->error</td>";
-	$my->query("DROP TABLE IF EXISTS Genus;");
-	if($my->error)
-		echo"<td>species: $my->error</td>";
-	$my->query("DROP TABLE IF EXISTS Family;");
-	if($my->error)
-		echo"<td>genus: $my->error</td>";
-
-	$code = $my->query("CREATE TABLE IF NOT EXISTS Family (
-		id INT NOT NULL AUTO_INCREMENT,
-		name VARCHAR(100),
-		PRIMARY KEY(id),
-		CONSTRAINT unique_family UNIQUE(name)
-	);");
-	if($my->error)
-		echo"<p>myerror $my->error</p>";
-
-	$code = $my->query("CREATE TABLE IF NOT EXISTS Genus (
-		id INT NOT NULL AUTO_INCREMENT,
-		family_id INT,
-		name VARCHAR(100),
-		PRIMARY KEY(id),
-		FOREIGN KEY ( family_id ) REFERENCES Family(id) ON DELETE CASCADE,
-		CONSTRAINT unique_genus UNIQUE(name)
-	);");
-	if($my->error)
-		echo"<p>myerror $my->error</p>";
-
-	$code = $my->query("CREATE TABLE IF NOT EXISTS Species (
-		id INT NOT NULL AUTO_INCREMENT,
-		genus_id INT,
-		name VARCHAR(100),
-		PRIMARY KEY(id),
-		FOREIGN KEY ( genus_id ) REFERENCES Genus(id) ON DELETE CASCADE,
-		CONSTRAINT unique_genus UNIQUE(name)
-	);");
-	if($my->error)
-		echo"<p>myerror $my->error</p>";
-
-	$code = $my->query("CREATE TABLE IF NOT EXISTS Plants (
-		id INT NOT NULL AUTO_INCREMENT,
-		family INT NOT NULL,
-		genus INT NOT NULL,
-		species INT NOT NULL,
-		common VARCHAR(100),
-		PRIMARY KEY(id),
-		FOREIGN KEY ( family ) REFERENCES Family(id) ON DELETE CASCADE,
-		FOREIGN KEY ( genus ) REFERENCES Genus(id) ON DELETE CASCADE,
-		FOREIGN KEY ( species ) REFERENCES Species(id) ON DELETE CASCADE,
-		CONSTRAINT UNIQUE KEY( family, genus, species)
-	);");
-	if($my->error)
-		echo"<p>myerror $my->error</p>";
-
-	$code = $my->query("CREATE TABLE IF NOT EXISTS Images (
-		id INT NOT NULL AUTO_INCREMENT,
-		image VARCHAR(100) UNIQUE,
-		plant_id INT,
-		orientation INT,
-		date DATETIME,
-		PRIMARY KEY(id),
-		FOREIGN KEY ( plant_id ) REFERENCES Plants(id) ON DELETE CASCADE
-	);");
-	if($my->error)
-		echo"<p>myerror $my->error</p>";
 
 
-	echo"<p>$my->error</p>";
-	#Family 	Genus 	Species
-	
-	echo"<br/>";
-	print_r($code);
-	echo"<br/>";
-	$root=$_SERVER['DOCUMENT_ROOT'];
-	#echo "$root/../phplib/image.php";
-
-	include("$root/../phplib/image.php");
-	$glo=array();
-	echo $root;
-	$glo=array_merge(glob("$root/pics/Pics/plants/*.jpg"),$glo);
-	
-	echo "<p>start loop</p>";
-	echo "<table>";
-	foreach($glo as $key => $value){
-				echo "<tr>";
-				echo "<td>image is $value</td>";
-				$cats = GetTags($value);
-				$c=print_r($cats,true);
-				echo "<td>catagories $c</td>";
-				if($cats[2]==""){
-					echo "<td>No info</td>";
-					#$code = $my->query("INSERT IGNORE INTO Images (image) VALUES ('$value');");
-					continue;
-				}
-
-				putPlants($cats[2],$cats[3],$cats[4],$cats[5],$value,$my);
-				echo "</tr>";
-	}
-	echo "</table>";
-	$my->close();
-}
 function getPictures(){
 	$my=connect();
 	if(mysqli_connect_errno()){
@@ -348,7 +222,7 @@ function GetImagesM($post){
 	$pinfo=new stdClass();
 	$plants=array();
 	//print_r($poly);
-	$query="CALL GetPictures('$p', (ST_GeomFromText('$poly')));";
+	$query="CALL GetPictures('$p', (ST_GeomFromText('$poly')),0,0,0);";
 	if($result = $my->query($query)){
 		while($row = $result->fetch_assoc()){
 			//$p=print_r($row['fname'],True);
