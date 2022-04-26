@@ -27,10 +27,12 @@ include "$root/session.php";
 		<section id="mainarea">
 			<div id="allotment-content">
 				<div class="article">
-					<p>Most allotmenter's do not like to see moles, horrid things that leave piles of soil about, mainly amongst the veg.</p>
-					<p>We actually quite like them, good for churning the soil and they don't actually eat your crops as they are carnivorous.</p>
-					<p>This little chap was wondering about on the allotment, bold a brass, in broad daylight.</p>
-					<p>It was very dry after a period of drought and so was probably thirsty. Ended up in the strawberrys, hopefully not resorting to some fruit.</p>
+					<?php
+						$a=getArticle("moles");
+						foreach($a as $k => $p){
+							echo "<p>$p</p>";
+						}
+					?>
 				</div>
 				<figure>
 					<video controls width="500" style="width:100%">

@@ -1,6 +1,7 @@
 <?php
 $my=null;
 include("${_SERVER["DOCUMENT_ROOT"]}/../ssl/creds/dbpass.php");
+include("${_SERVER["DOCUMENT_ROOT"]}/../phplib/blogdb.php");
 function connect(){
 	global $my;
 	if($my != null){
