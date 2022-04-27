@@ -347,6 +347,19 @@ function Cookie($uuid){
 	}
 	disconnect();
 }
+
+function GetLoginDetails($id){
+	error_log("GetLoginDetails");
+	$my=connect();
+	$query="CALL GetLoginDetails('$id');";
+	if($result = $my->query($query)){
+		$row = $result->fetch_assoc();
+			disconnect();
+			return($row);
+	}
+	disconnect();
+}
+
 function OverPassCookie($uuid,$scale,$place){
 	error_log("OverPassCookie");
 	$my=connect();

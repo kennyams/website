@@ -132,6 +132,14 @@ CREATE PROCEDURE IF NOT EXISTS  `pubmeuk_wp789`.`Cookie`(IN c VARCHAR(32))
 	END
 &&
 
+DROP PROCEDURE IF EXISTS GetLoginDetails;
+&&
+CREATE PROCEDURE IF NOT EXISTS  `pubmeuk_wp789`.`GetLoginDetails`(IN id INTEGER)
+	BEGIN
+		SELECT u.`user` ,u.email  FROM Users u WHERE u.id  = id;
+	END
+&&
+
 DROP PROCEDURE IF EXISTS DeleteOldCookies;
 &&
 CREATE PROCEDURE IF NOT EXISTS  `pubmeuk_wp789`.`DeleteOldCookies`()
