@@ -28,6 +28,7 @@
 	$settings = Cookie($uuid);
 	$dbg=print_r($settings,true);
 	error_log("settings are $dbg");
+	error_log("login details are $dbg");
 	if($settings==null or count($settings)==0){
 		error_log("Warning, cookie not in database");
 		NewCookie($uuid);
@@ -35,5 +36,12 @@
 		$dbg=print_r($settings,true);
 		error_log("default settings are $dbg");
 	}
-
+	$name="";
+	$email="";
+	if(isset($settings['user_id'])){
+		$loginDetails = GetLoginDetails($settings['user_id']);
+		$dbg=print_r($loginDetails,true);
+		$name=$loginDetails['user'];
+		$email=$loginDetails['email'];
+	}
 ?>

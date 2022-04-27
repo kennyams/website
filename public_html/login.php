@@ -9,8 +9,6 @@
 		session_set_cookie_params(60);
 		error_log("session started");
 	}
-	$name="";
-	$email="";
 	if(isset($_SESSION["name"])){
 		header('Location: /profile.php');
 		die();
