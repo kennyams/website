@@ -1,6 +1,7 @@
 <?php 
 $root=$_SERVER["DOCUMENT_ROOT"];
 include "$root/session.php";
+include "$root/../phplib/article.php";
 ?>
 <!DOCTYPE html>
 <html>
@@ -28,10 +29,7 @@ include "$root/session.php";
 			<div id="allotment-content">
 				<div class="article">
 					<?php
-						$a=getArticle("moles");
-						foreach($a as $k => $p){
-							echo "<p>$p</p>";
-						}
+						article("moles");
 					?>
 				</div>
 				<figure>

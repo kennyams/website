@@ -380,4 +380,15 @@ function deleteOldCookies(){
 	}
 	disconnect();
 }
+function GetRandomImage(){
+	error_log("GetRandomImage");
+	$my=connect();
+	$query="CALL GetRandomImage();";
+	if($result = $my->query($query)){
+		$row = $result->fetch_assoc();
+			disconnect();
+			return($row);
+	}
+	disconnect();
+}
 ?>
