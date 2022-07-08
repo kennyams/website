@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS Family (
 		id INT NOT NULL AUTO_INCREMENT,
 		name VARCHAR(100),
 		PRIMARY KEY(id),
-		CONSTRAINT unique_family UNIQUE(name) 
+		CONSTRAINT unique_family UNIQUE(name)
 	);
 
 CREATE TABLE IF NOT EXISTS Genus (
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS Genus (
 		name VARCHAR(100),
 		PRIMARY KEY(id),
 		FOREIGN KEY ( family_id ) REFERENCES Family(id) ON DELETE CASCADE,
-		CONSTRAINT unique_genus UNIQUE(name) 
+		CONSTRAINT unique_genus UNIQUE(name)
 	);
 
 CREATE TABLE IF NOT EXISTS Species (
@@ -28,20 +28,20 @@ CREATE TABLE IF NOT EXISTS Species (
 		name VARCHAR(100),
 		PRIMARY KEY(id),
 		FOREIGN KEY ( genus_id ) REFERENCES Genus(id) ON DELETE CASCADE,
-		CONSTRAINT unique_genus UNIQUE(name) 
+		CONSTRAINT unique_genus UNIQUE(name)
 	);
 
 CREATE TABLE IF NOT EXISTS Plants (
 		id INT NOT NULL AUTO_INCREMENT,
 		family INT NOT NULL,
-		genus INT NOT NULL, 
+		genus INT NOT NULL,
 		species INT NOT NULL,
 		common VARCHAR(100),
 		PRIMARY KEY(id),
 		FOREIGN KEY ( family ) REFERENCES Family(id) ON DELETE CASCADE,
 		FOREIGN KEY ( genus ) REFERENCES Genus(id) ON DELETE CASCADE,
 		FOREIGN KEY ( species ) REFERENCES Species(id) ON DELETE CASCADE,
-		CONSTRAINT UNIQUE KEY( family, genus, species) 
+		CONSTRAINT UNIQUE KEY( family, genus, species)
 	);
 
 	-- pubmeuk_wp789.Images definition
@@ -61,6 +61,8 @@ CREATE TABLE IF NOT EXISTS Images (
 CREATE OR REPLACE INDEX Family_name ON Family (name);
 CREATE OR REPLACE INDEX Genus_name ON Genus (name);
 CREATE OR REPLACE INDEX Species_name ON Species (name);
+
+CREATE OR REPLACE INDEX Images_date ON Images (date);
 
 DELIMITER &&
 DROP PROCEDURE IF EXISTS FirstDate
@@ -93,7 +95,7 @@ CREATE PROCEDURE IF NOT EXISTS `GetGenus`(IN f JSON)
 		label1: LOOP
 				INSERT INTO t (family) (
 					SELECT REPLACE (JSON_EXTRACT(f,CONCAT('$[',@i,']')),'"','')
-				); 
+				);
 			SET @i = @i + 1;
 			IF @i > JSON_LENGTH(f)-1 THEN
 					LEAVE label1;
@@ -126,7 +128,7 @@ CREATE PROCEDURE IF NOT EXISTS `GetSpecies`(IN s JSON)
 		END LOOP label1;
 		
 		SELECT s.name AS name from Species s
-			JOIN Genus g ON g.id = s.genus_id 
+			JOIN Genus g ON g.id = s.genus_id
 			WHERE g.name IN (SELECT genus FROM t);
 		DROP TABLE t;
 	END
@@ -202,43 +204,140 @@ DROP PROCEDURE IF EXISTS GetPictures
 &&
 
 #CREATE PROCEDURE IF NOT EXISTS `GetPictures`(IN s JSON, IN area POLYGON, IN o INTEGER, IN c INTEGER, IN i INTEGER)
-CREATE PROCEDURE IF NOT EXISTS `GetPictures`(IN s JSON, IN area POLYGON, IN o INTEGER, IN c INTEGER, IN i INTEGER)
+CREATE PROCEDURE IF NOT EXISTS `GetPictures`(IN s JSON)
 	#NO SQL
 	BEGIN
+		#SELECT UNIX_TIMESTAMP(now(5)) INTO @now;
 		SET @families = JSON_EXTRACT(s,'$.familySelected');
 		SET @genus = JSON_EXTRACT(s,'$.genusSelected');
 		SET @species = JSON_EXTRACT(s,'$.speciesSelected');
 		SET @from = REPLACE (JSON_EXTRACT(s,'$.from'),'"','');
 		SET @to = REPLACE (JSON_EXTRACT(s,'$.to'),'"','');
+		SET @first := REPLACE (JSON_EXTRACT(s,'$.first'),'"','');
+		SET @last := REPLACE (JSON_EXTRACT(s,'$.last'),'"','');
+		SET @area = ST_GeomFromText(REPLACE (JSON_EXTRACT(s,'$.map'),'"',''));
+		SET @cnt = REPLACE (JSON_EXTRACT(s,'$.count'),'"','');
+		SET @oset = REPLACE (JSON_EXTRACT(s,'$.offset'),'"','');
+		SET @direction = REPLACE (JSON_EXTRACT(s,'$.direction'),'"','');
+		IF @cnt < 0 THEN
+			SELECT COUNT(*) INTO @cnt FROM Images;
+		END IF;
+		CALL CreateTempTables(s);
+		IF @direction LIKE "f" THEN
+			PREPARE TestSQL FROM'
+			SELECT  * FROM (
+				SELECT
+					Images.id AS "image_id", Images.image, Images.orientation, Plants.id,
+					Family.name AS "fname",
+					Genus.name AS "gname",
+					Species.name AS "sname",
+					Plants.common, Images.date,
+					REGEXP_REPLACE( ST_AsText(Images.location),"^POINT\\\\((.+) (.+)\\\\)","\\\\1,\\\\2") AS location
+					FROM Images
+					JOIN Plants ON Images.plant_id = Plants.id
+					JOIN Family ON Plants.family = Family.id
+					JOIN Genus ON Plants.genus = Genus.id
+					JOIN Species ON Plants.species = Species.id
+					WHERE Images.`date` > @from
+					AND Images.`date` <= DATE_ADD(@to, INTERVAL 1 DAY)
+					AND (Family.name IN (SELECT family FROM t_f) OR ISNULL(@families))
+					AND Family.id = Plants.family
+					AND (Genus.name IN (SELECT genus FROM t_g) OR ISNULL(@genus))
+					AND Genus.id = Plants.genus
+					AND (Species.name IN (SELECT species FROM t_s) OR ISNULL(@species))
+					AND Species.id = Plants.species
+					AND (ISNULL(@area) OR ST_CONTAINS(@area, Images.location))
+					AND Images.`date`  > @last
+					ORDER BY Images.`date`
+					LIMIT ?, ?
+			)  AS t ORDER BY t.`date`
+			;
+			';
+		ELSEIF @direction LIKE "n" THEN
+			PREPARE TestSQL FROM'
+			SELECT  * FROM (
+				SELECT
+					Images.id AS "image_id", Images.image, Images.orientation, Plants.id,
+					Family.name AS "fname",
+					Genus.name AS "gname",
+					Species.name AS "sname",
+					Plants.common, Images.date,
+					REGEXP_REPLACE( ST_AsText(Images.location),"^POINT\\\\((.+) (.+)\\\\)","\\\\1,\\\\2") AS location
+					FROM Images
+					JOIN Plants ON Images.plant_id = Plants.id
+					JOIN Family ON Plants.family = Family.id
+					JOIN Genus ON Plants.genus = Genus.id
+					JOIN Species ON Plants.species = Species.id
+					WHERE Images.`date` > @from
+					AND Images.`date` <= DATE_ADD(@to, INTERVAL 1 DAY)
+					AND (Family.name IN (SELECT family FROM t_f) OR ISNULL(@families))
+					AND Family.id = Plants.family
+					AND (Genus.name IN (SELECT genus FROM t_g) OR ISNULL(@genus))
+					AND Genus.id = Plants.genus
+					AND (Species.name IN (SELECT species FROM t_s) OR ISNULL(@species))
+					AND Species.id = Plants.species
+					AND (ISNULL(@area) OR ST_CONTAINS(@area, Images.location))
+					#AND Images.`date`  >= @first
+					ORDER BY Images.`date`
+					LIMIT ?, ?
+			)  AS t ORDER BY t.`date`
+			;
+			';
+		ELSE
+			PREPARE TestSQL FROM'
+			SELECT  * FROM (
+				SELECT
+					Images.id AS "image_id", Images.image, Images.orientation, Plants.id,
+					Family.name AS "fname",
+					Genus.name AS "gname",
+					Species.name AS "sname",
+					Plants.common, Images.date,
+					REGEXP_REPLACE( ST_AsText(Images.location),"^POINT\\\\((.+) (.+)\\\\)","\\\\1,\\\\2") AS location
+					FROM Images
+					JOIN Plants ON Images.plant_id = Plants.id
+					JOIN Family ON Plants.family = Family.id
+					JOIN Genus ON Plants.genus = Genus.id
+					JOIN Species ON Plants.species = Species.id
+					WHERE Images.`date` > @from
+					AND Images.`date` <= DATE_ADD(@to, INTERVAL 1 DAY)
+					AND (Family.name IN (SELECT family FROM t_f) OR ISNULL(@families))
+					AND Family.id = Plants.family
+					AND (Genus.name IN (SELECT genus FROM t_g) OR ISNULL(@genus))
+					AND Genus.id = Plants.genus
+					AND (Species.name IN (SELECT species FROM t_s) OR ISNULL(@species))
+					AND Species.id = Plants.species
+					AND (ISNULL(@area) OR ST_CONTAINS(@area, Images.location))
+					AND Images.`date`  < @first
+					ORDER BY Images.`date` DESC
+					LIMIT ?, ?
+			)  AS t ORDER BY t.`date`
+			;
+			';
+		END IF;
+		EXECUTE TestSql USING @oset,@cnt;
+		#SELECT (UNIX_TIMESTAMP(now(5)) - @now)*1000 INTO @one;
+		#SELECT UNIX_TIMESTAMP(now(5)) INTO @now;
 
-		CALL CreateTempTables(s); 
-
-		SELECT  * FROM (
-	  	SELECT Images.id AS 'image_id', Images.image, Images.orientation, Plants.id,
-		Family.name AS 'fname',
-		Genus.name AS 'gname',
-		Species.name AS 'sname',
-		Plants.common, Images.date,
-	  	REGEXP_REPLACE( ST_AsText(Images.location),"^POINT\\((.+) (.+)\\)","\\1,\\2") AS location
-		FROM Images
-		JOIN Plants ON Images.plant_id = Plants.id
-		JOIN Family ON Plants.family = Family.id
-		JOIN Genus ON Plants.genus = Genus.id
-		JOIN Species ON Plants.species = Species.id
-		WHERE Images.`date` > @from
-		AND Images.`date` <= DATE_ADD(@to, INTERVAL 1 DAY)
-		AND (Family.name IN (SELECT family FROM t_f) OR ISNULL(@families))
-		AND Family.id = Plants.family
-		AND (Genus.name IN (SELECT genus FROM t_g) OR ISNULL(@genus))
-		AND Genus.id = Plants.genus
-		AND (Species.name IN (SELECT species FROM t_s) OR ISNULL(@species))
-		AND Species.id = Plants.species
-		AND (ISNULL(area) OR ST_CONTAINS(area, Images.location))
-		#AND Images.id >= i
-		ORDER BY Images.id
-		#LIMIT c OFFSET o
-		)  AS t ORDER BY t.`date` 
-	;
+		
+		SELECT COUNT(*) AS count
+			FROM Images
+			JOIN Plants ON Images.plant_id = Plants.id
+			JOIN Family ON Plants.family = Family.id
+			JOIN Genus ON Plants.genus = Genus.id
+			JOIN Species ON Plants.species = Species.id
+			WHERE Images.`date` > @from
+			AND Images.`date` <= DATE_ADD(@to, INTERVAL 1 DAY)
+			AND (Family.name IN (SELECT family FROM t_f) OR ISNULL(@families))
+			AND Family.id = Plants.family
+			AND (Genus.name IN (SELECT genus FROM t_g) OR ISNULL(@genus))
+			AND Genus.id = Plants.genus
+			AND (Species.name IN (SELECT species FROM t_s) OR ISNULL(@species))
+			AND Species.id = Plants.species
+			AND (ISNULL(@area) OR ST_CONTAINS(@area, Images.location))
+			#ORDER BY Images.id
+		;
+		#SELECT @one, (UNIX_TIMESTAMP(now(5)) - @now)*1000;
+	
 	END
 &&
 DROP PROCEDURE IF EXISTS GetImagesWithoutLocation
@@ -273,7 +372,7 @@ CREATE PROCEDURE IF NOT EXISTS `GetRandomImage`()
 		SET @N=0;
 		SELECT COUNT(i.id) FROM Images i INTO @N;
 		select FLOOR(RAND()*@N) INTO @c;
-		SELECT CONCAT("SELECT * From Images i order by i.id LIMIT ",@c) INTO @SQL;
+		SELECT CONCAT("SELECT * From Images i order by i.id LIMIT ",@C) INTO @SQL;
 		SELECT CONCAT(@SQL,",1;") INTO @SQL;
 		PREPARE stmt FROM @SQL;
 		EXECUTE stmt;
@@ -289,16 +388,67 @@ DELIMITER ;
 /*
 &&
 
-CALL GetPictures('{"familySelected":["Saxifragaceae","Solanaceae"],"genusSelected":["Solanum"],"from":"2020-04-10","to":"2021-01-09"}', NULL) 
+CALL GetPictures('{"familySelected":["Saxifragaceae","Solanaceae"],"genusSelected":["Solanum"],"from":"2020-04-10","to":"2021-01-09"}', NULL)
 &&
-#CALL GetPictures('{"familySelected":["Saxifragaceae","Solanaceae"],"from":"2020-04-10","to":"2021-01-09"}') 
-CALL GetPictures('{"from":"2020-04-10","to":"2021-01-09"}', ST_GEOMFROMTEXT('POLYGON((51.262989030960796 -0.5288915097817393, 51.262989030960796 -0.6696538388833018, 51.21140017256014 -0.6696538388833018,51.21140017256014 -0.5288915097817393,51.262989030960796 -0.5288915097817393))')) 
+#CALL GetPictures('{"familySelected":["Saxifragaceae","Solanaceae"],"from":"2020-04-10","to":"2021-01-09"}')
+CALL GetPictures('{"from":"2020-04-10","to":"2021-01-09"}', ST_GEOMFROMTEXT('POLYGON((51.262989030960796 -0.5288915097817393, 51.262989030960796 -0.6696538388833018, 51.21140017256014 -0.6696538388833018,51.21140017256014 -0.5288915097817393,51.262989030960796 -0.5288915097817393))'))
 &&
-CALL GetPictures('{"from":"2020-04-10","to":"2021-01-09"}', NULL) 
+CALL GetPictures('{"from":"2020-04-10","to":"2021-01-09"}', NULL)
 &&
 */
-CALL GetRandomImage();
-#CALL GetPictures('{"from":"2020-03-01","to":"2022-04-25"}', NULL,0,5,10);
+#CALL GetRandomImage();
+#CALL GetPictures('{"from":"2020-03-13","to":"2022-05-23","count":"10","offset":"0"}',0,5,'2020-06-15 08:19:40.000','n');
+#CALL GetPictures('{"from":"2020-03-13","to":"2022-05-23","count":"10","offset":"0"}',0,5,'2020-04-10 10:50:02.000','b');
+#CALL GetPictures('{"from":"2020-03-13","to":"2022-05-23","count":"10","offset":"0"}',0,5,'2020-06-15 08:19:40.000','a');
+CALL GetPictures('{
+	"from":"2020-03-13",
+	"to":"2022-05-23",
+	"count":"5",
+	"offset":"0",
+	"first":"2020-06-15 08:19:40.000",
+	"last":"2020-06-15 08:19:40.000",
+	"direction":"b"
+	}');
+
+CALL GetPictures('{
+	"map":"POLYGON((51.262989030960796 -0.5288915097817393, 51.262989030960796 -0.6696538388833018, 51.21140017256014 -0.6696538388833018,51.21140017256014 -0.5288915097817393,51.262989030960796 -0.5288915097817393))",
+	"from":"2020-03-13",
+	"to":"2022-05-23",
+	"count":"5",
+	"offset":"0",
+	"first":"2020-06-15 08:19:40.000",
+	"last":"2020-06-15 08:19:40.000",
+	"direction":"b"
+	}');
+
+CALL GetPictures('{
+	"map":"POLYGON((51.262989030960796 -0.5288915097817393, 51.262989030960796 -0.6696538388833018, 51.21140017256014 -0.6696538388833018,51.21140017256014 -0.5288915097817393,51.262989030960796 -0.5288915097817393))",
+	"from":"2020-03-13",
+	"to":"2022-05-23",
+	"count":"5",
+	"offset":"0",
+	"first":"2020-06-15 08:19:40.000",
+	"last":"2020-06-15 08:19:40.000",
+	"direction":"b"
+	}');
+
+CALL GetPictures('{
+	"map":"POLYGON((51.262989030960796 -0.5288915097817393, 51.262989030960796 -0.6696538388833018, 51.21140017256014 -0.6696538388833018,51.21140017256014 -0.5288915097817393,51.262989030960796 -0.5288915097817393))",
+	"from":"2020-03-13",
+	"to":"2022-05-23",
+	"count":"5",
+	"offset":"0",
+	"first":"0000-00-00",
+	"last":"0000-00-00",
+	"direction":"n"
+	}');
+
+CALL GetPictures('{"count":"5","from":"2020-03-13","to":"2022-07-06","offset":"0","direction":"n","last":"2020-04-10 10:50:02","first":"2020-03-13 17:23:37","map":"POLYGON((51.44223534469 -0.13665975261789, 51.44223534469 0.039464820135997, 51.50147328012 0.039464820135997, 51.50147328012 -0.13665975261789, 51.44223534469 -0.13665975261789))"}');
+SELECT UNIX_TIMESTAMP(now(5)) INTO @now1;
+CALL GetPictures('{"count":"5","from":"2020-03-13","to":"2022-07-06","offset":"0","direction":"n","last":"2020-04-10 10:50:02","first":"2020-03-13 17:23:37","map":"POLYGON((57.154119970299 -120.41015625, 57.154119970299 -114.77416992188, 58.76820015924 -114.77416992188, 58.76820015924 -120.41015625, 57.154119970299 -120.41015625))"}');
+SELECT (UNIX_TIMESTAMP(now(5)) - @now1)*1000;
+
+SELECT * FROM Images ORDER BY `date`;
 #CALL GetPictures('{"familySelected":["Leguminosae"],"from":"2020-03-15","to":"2021-02-26"}',ST_GEOMFROMTEXT('POLYGON((51.262989030960796 -0.5288915097817393, 51.262989030960796 -0.6696538388833018, 51.21140017256014 -0.6696538388833018,51.21140017256014 -0.5288915097817393,51.262989030960796 -0.5288915097817393))'),0,3);
 #CALL GetPictures('{"from":"2021-02-01","to":"2021-03-30"}',ST_GEOMFROMTEXT('POLYGON((51.262989030960796 -0.5288915097817393, 51.262989030960796 -0.6696538388833018, 51.21140017256014 -0.6696538388833018,51.21140017256014 -0.5288915097817393,51.262989030960796 -0.5288915097817393))'),0,1);
 #CALL GetPictures('{"from":"2021-03-01","to":"2021-03-27"}', (ST_GeomFromText('')),16,1);

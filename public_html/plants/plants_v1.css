@@ -7,6 +7,12 @@
 	body{
 		height:auto;
 	}
+
+	#mapinner{
+		display:block;
+		height:100%;
+	}
+
 	#mapid{
 		width:100%;
 		height:100%;
@@ -14,6 +20,8 @@
 
 
 	#mapframe{
+		display:flex;
+		flex-direction:column;
 		grid-area:map;
 		border:10px solid pink;
 	}
@@ -332,8 +340,7 @@
 					"thumb map map main main"
 					;
 				grid-template-columns:1fr 1fr 1fr 1fr 1fr;
-				grid-template-rows:50% 50%;
-				height:100vh;
+				grid-template-rows:auto auto;
 		}
 		#piccontainer{
 			grid-template-columns: repeat(5,1fr);
@@ -348,8 +355,7 @@
 					"thumb map map main main"
 					;
 				grid-template-columns:1fr 1fr 1fr 1fr 1fr;
-				grid-template-rows:50% 50%;
-				height:100vh;
+				grid-template-rows:auto auto;
 		}
 		#piccontainer{
 			grid-template-columns: repeat(5,1fr);

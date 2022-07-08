@@ -4,6 +4,11 @@
 	var mapLoaded=false;
 	var debug=false;
 	var map_zoom_level=13;
+	var page_offset=0;
+	var images_to_display=100;
+	var last_image="0000-00-00";
+	var first_image="0000-00-00";
+	var count=-1;
 	function log(msg){
 		if(debug)
 			console.log(msg);
@@ -48,6 +53,41 @@
 			this.value = this.value.replace(/[^a-z ,]/, '');
 		});
 
+		$("#back").on('click',function(event){
+			console.log("back");
+			if(page_offset==0){
+				return;
+			}
+			var numPages = parseInt($('#numberOfPages').val());
+			page_offset -= numPages;
+			if(page_offset<0){
+				page_offset=0;
+			}
+			console.log(page_offset);
+			updateThumbs(event);
+		});
+
+		$("#forwards").on('click',function(event){
+			console.log("forwards");
+			var numPages = parseInt($('#numberOfPages').val());
+			if(numPages == -1){
+				return;
+			}
+			if( page_offset+numPages<count || count<0){
+				page_offset += numPages;
+			}
+			else{
+				return;
+			}
+			console.log(page_offset);
+			updateThumbs(event);
+		});
+
+		$('#numberOfPages').change(function(){
+			console.log("numberOfPages");
+			page_offset=0;
+			updateThumbs();
+		});
 
 		$("#place").submit(function(event){
 			event.preventDefault();
@@ -219,6 +259,25 @@
 		if($('#onmap').is(":checked")){
 			fdata.append('map',JSON.stringify(mapbounds));
 		}
+		//fdata.append('offset',page_offset);
+		fdata.append('offset',0);
+		var last = $('#frompicker').datepicker("getDate");
+		if(event){
+			if(event.currentTarget.id=="forwards"){
+			///	if(!last_image){
+				fdata.append('direction','f');
+					//last_image=$.datepicker.formatDate("yy-mm-dd",last);
+			///	}
+			}
+			if(event.currentTarget.id=="back"){
+				fdata.append('direction','b');
+					//last_image=$.datepicker.formatDate("yy-mm-dd",last);
+			}
+		}else{
+			fdata.append('direction','n');
+		}
+		fdata.append('last',last_image);
+		fdata.append('first',first_image);
 		$("#loading").show();
 		$.ajax({ url:"/plants/plantapi.php?images",
 				method:"POST",
@@ -229,32 +288,39 @@
 				{
 					$('#piccontainer').empty();
 					var res=JSON.parse(x);
+					count = res.count;
+					log(count);
+
 					var div = document.getElementById('piccontainer');
 					if(Markers!=null){
 						Markers.clearLayers();
 					}
 					Markers = L.layerGroup();
-					for (var i in res.pics){
-						var picdata = res.pics[i];
-						loc=picdata.loc;
-						if(loc==null)
-							continue;
-						loc = loc.split(',');
-						marker = L.marker(loc).addTo(Markers);
-						marker.id=i;
-						var x = atob(picdata.pic);
-						var img = $("<img></img>");
-						var tdiv = $("<div class=\"thumbHolder\"></div>").append(img).append("<p>"+picdata.date+"</p>");
-						
-						img.attr("src", "data:image/jpeg;base64,"+picdata.pic);
-						img.attr("data-path",picdata.name);
-						img.attr("data-plant-type",picdata.cats);
-						img.attr("data-location",picdata.loc);
-						$('#piccontainer').append(tdiv);
-						img.attr("style", "width:100%");
-						var ip = img.clone().add($("<p>" + picdata.species +  "</p>"));
-						var divip = $("<div></div>").append(ip);
-						marker.bindPopup(divip.prop('outerHTML') );
+					if(res.pics.length>0){
+						last_image=res.pics[res.pics.length-1].date;
+						first_image=res.pics[0].date;
+						for (var i in res.pics){
+							var picdata = res.pics[i];
+							loc=picdata.loc;
+							if(loc==null)
+								continue;
+							loc = loc.split(',');
+							marker = L.marker(loc).addTo(Markers);
+							marker.id=i;
+							var x = atob(picdata.pic);
+							var img = $("<img></img>");
+							var tdiv = $("<div class=\"thumbHolder\"></div>").append(img).append("<p>"+picdata.date+"</p>");
+							
+							img.attr("src", "data:image/jpeg;base64,"+picdata.pic);
+							img.attr("data-path",picdata.name);
+							img.attr("data-plant-type",picdata.cats);
+							img.attr("data-location",picdata.loc);
+							$('#piccontainer').append(tdiv);
+							img.attr("style", "width:100%");
+							var ip = img.clone().add($("<p>" + picdata.species +  "</p>"));
+							var divip = $("<div></div>").append(ip);
+							marker.bindPopup(divip.prop('outerHTML') );
+					}
 				}
 				Markers.addTo(mymap);
 				$image=$("#piccontainer img");
@@ -324,7 +390,10 @@
 			updateThumbs();
 		});
 
-		$('#onmap').click( updateThumbs);
+		$('#onmap').click( function(){
+			page_offset=0;
+			updateThumbs();
+		});
 		$( window ).on( "orientationchange", function( event ) {
 	  		$( "#orientation" ).text( "This device is in " + event.orientation + " mode!" );
 				ori=event.orientation;

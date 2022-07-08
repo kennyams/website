@@ -49,8 +49,6 @@ include "$root/session.php";
 				<div id="filterOptions">
 					<label  for="onmap">Filter on map area</label>
 					<input class="filterOptionsOption" id="onmap" form="filter" type="checkbox" value="map"/>
-					<label  >Find Place</label>
-					<input class="filterOptionsOption" id="i_place" form="place" type="text" value="Surrey"/>
 				</div>
 				<div>
 <?php
@@ -62,6 +60,20 @@ include "$root/session.php";
 						}
 					}
 ?>
+				</div>
+				<div>
+					<form  id="pagnation">
+						<input id="back" class="filterOptionsOption" form="pagnation" type="button" value="<">
+						<label>Images To Show</label>
+						<select id="numberOfPages" name="count" form="filter" >
+							<option Value="5" >5</option>
+							<option Value="10" >10</option>
+							<option Value="50" >50</option>
+							<option Value="-1" >Max</option>
+						</select>
+						<label>Number</label>
+						<input id="forwards" class="filterOptionsOption" type="button" value=">">
+					</form>
 				</div>
 			</div>
 			<!--p id="Selection" class="toggleControl">Selection</p-->
@@ -86,7 +98,10 @@ include "$root/session.php";
 				<!--/div-->
 			<!--/section-->
 			<div id="mapframe">
-				<div id="mapid">
+					<label  >Find Place</label>
+					<input class="filterOptionsOption" id="i_place" form="place" type="text" value="Surrey"/>
+				<div id="mapinner">
+					<div id="mapid"> </div>
 				</div>
 			</div>
 			<script>

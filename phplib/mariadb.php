@@ -209,24 +209,28 @@ function firstDate(){
 
 function GetImagesM($post){
 	$my=connect();
+	if(mysqli_connect_errno()){
+		printf("Connection Error: %s\n" , mysqli_connect_error());
+	}
 	$poly='';
 	if(array_key_exists('map',$post)){
 		$map=$post['map'];
 		unset($post['map']);
 		$poly = json_decode($map);
 		$poly = getPoly($poly);
+		$post['map']=$poly;
 	}
 	$p=json_encode($post);
-	if(mysqli_connect_errno()){
-		printf("Connection Error: %s\n" , mysqli_connect_error());
-	}
+	//error_log(print_r($p,true));
 	$pinfo=new stdClass();
 	$plants=array();
 	//print_r($poly);
-	$query="CALL GetPictures('$p', (ST_GeomFromText('$poly')),0,0,0);";
-	if($result = $my->query($query)){
+	$query="CALL GetPictures('$p');";
+	$my->multi_query($query);
+	if($result = $my->store_result()){
+		error_log(print_r($result,true));
 		while($row = $result->fetch_assoc()){
-			//$p=print_r($row['fname'],True);
+			$p=print_r($row['fname'],True);
 			$plant=new stdClass();
 			$plant->family=$row['fname'];
 			$plant->genus=$row['gname'];
@@ -236,14 +240,42 @@ function GetImagesM($post){
 			$plant->location=$row['location'];
 			$plant->orientation=$row['orientation'];
 			$plant->date=$row['date'];
+			error_log(print_r($row,true));
 			array_push($plants,$plant);
-
-			//print_r($row);
 		}
 		$pinfo->plants=$plants;
+		$result->free();
 	}else{
-		printf("get plants error");
+		error_log("get plants error");
 	}
+	$my->next_result();
+	if($result = $my->store_result()){
+		$row = $result->fetch_assoc();
+		//error_log(print_r($row,true));
+		$pinfo->count=$row['count'];
+		$result->free();
+	}else{
+		error_log("get plants error");
+	}
+	$my->next_result();
+	if($result = $my->store_result()){
+		error_log(print_r($result,true));
+		$row = $result->fetch_assoc();
+		error_log(print_r($row,true));
+		$result->free();
+	}else{
+		//error_log("get plants error");
+	}
+	$my->next_result();
+	if($result = $my->store_result()){
+		error_log(print_r($result,true));
+		$row = $result->fetch_assoc();
+		error_log(print_r($row,true));
+		$result->free();
+	}else{
+		//error_log("get plants error");
+	}
+
 	$my->close();
 	return $pinfo;
 }

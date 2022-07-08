@@ -25,15 +25,24 @@ function getImgInfoAndThumb($post){
 	$payload->name="images";
 	$payload->pics=array();
 	$pinfo = GetImagesM($post);
+	$payload->count=$pinfo->count;
+
 	$plants = $pinfo->plants;
 	foreach($plants as $key => $plant){
 		$value=$plant->image;
 		$orientation=$plant->orientation;
-		$imagestr = exif_thumbnail($value, $width, $height, $type);
-
-		$image = imagecreatefromstring($imagestr);
-		if( $image===false){
-			$image=make_thumb($value,384);
+		$tmb=substr($value, 0, strrpos($value, "."));
+		$image=false;
+		if(!file_exists("${tmb}_thumb.jpg")){
+			$imagestr = exif_thumbnail($value, $width, $height, $type);
+			$image = imagecreatefromstring($imagestr);
+			if( $image===false){
+				error_log(print_r("Making thumb $value",true));
+				$image=make_thumb($value,384);
+				imagejpeg($image,"${tmb}_thumb.jpg");
+			}
+		}else{
+			$image = imagecreatefromjpeg("${tmb}_thumb.jpg");
 		}
 		if ($image!==false) {
 			switch($orientation){
