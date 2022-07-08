@@ -11,8 +11,8 @@ include "$root/session.php";
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
 		   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
 		   crossorigin=""/>
-		<link href="plants.css" rel="stylesheet"/>
-		<script src="plants.js"> </script>
+		<link href="plants_v1.css" rel="stylesheet"/>
+		<script src="plants_v1.js"> </script>
 
 		<!-- Make sure you put this AFTER Leaflet's CSS -->
 		 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
