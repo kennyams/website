@@ -8,6 +8,7 @@
 	var images_to_display=100;
 	var last_image="0000-00-00";
 	var first_image="0000-00-00";
+	var numPages;
 	var count=-1;
 	function log(msg){
 		if(debug)
@@ -17,6 +18,15 @@
 		$('#piccontainer').empty();
 		$("#loading").show();
 	});
+
+	function updateCount(){
+		numPages = parseInt($('#numberOfPages').val());
+		if(numPages<0)
+			numPages=count;
+		$("#pageNumber").html(1+page_offset/numPages);
+		$("#numberOfPagesl").html(Math.ceil(count/numPages));
+	}
+
 	$( function() {
 		$("#pagetitle").html("Plants collected on my phone");
 		$("#DateFromSelect").on("click",function(){
@@ -58,7 +68,7 @@
 			if(page_offset==0){
 				return;
 			}
-			var numPages = parseInt($('#numberOfPages').val());
+			numPages = parseInt($('#numberOfPages').val());
 			page_offset -= numPages;
 			if(page_offset<0){
 				page_offset=0;
@@ -69,7 +79,7 @@
 
 		$("#forwards").on('click',function(event){
 			console.log("forwards");
-			var numPages = parseInt($('#numberOfPages').val());
+			numPages = parseInt($('#numberOfPages').val());
 			if(numPages == -1){
 				return;
 			}
@@ -106,7 +116,9 @@
 		mymap.on('moveend', function() { 
 			if(mapLoaded){
 				log("moveend");
-				updateThumbs(null);
+				if($('#onmap').is(":checked")){
+					updateThumbs(null);
+				}
 			}
 		})
 		mymap.on('load', function() { 
@@ -162,6 +174,7 @@
 		Promise.all([getFirstDate,getFamilies]).then((values)=>{
 			log(`promise ${values}`);
 			updateThumbs();
+			updateCount();
 		});
 
 
@@ -250,6 +263,7 @@
 	}
 	function updateThumbs(event){
 		//event.preventDefault();
+		updateCount();
 		var mapbounds = mymap.getBounds();
 		var fdata = new FormData($('#filter')[0]);
 		var date = $('#frompicker').datepicker("getDate");
@@ -289,6 +303,7 @@
 					$('#piccontainer').empty();
 					var res=JSON.parse(x);
 					count = res.count;
+					updateCount();
 					log(count);
 
 					var div = document.getElementById('piccontainer');

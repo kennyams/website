@@ -12,7 +12,7 @@ include "$root/session.php";
 		   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
 		   crossorigin=""/>
 		<link href="plants_v1.css" rel="stylesheet"/>
-		<script src="plants_v1.js"> </script>
+		<script src="plants_v2.js"> </script>
 
 		<!-- Make sure you put this AFTER Leaflet's CSS -->
 		 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
@@ -47,7 +47,7 @@ include "$root/session.php";
 				</form>
 				<form id="place" > </form>
 				<div id="filterOptions">
-					<label  for="onmap">Filter on map area</label>
+					<label for="onmap">Filter on map area</label>
 					<input class="filterOptionsOption" id="onmap" form="filter" type="checkbox" value="map"/>
 				</div>
 				<div>
@@ -73,6 +73,10 @@ include "$root/session.php";
 						</select>
 						<label>Number</label>
 						<input id="forwards" class="filterOptionsOption" type="button" value=">">
+						<label>Page</label>
+						<label id="pageNumber" >1</label>
+						<label>Of</label>
+						<label id="numberOfPagesl">10</label>
 					</form>
 				</div>
 			</div>
