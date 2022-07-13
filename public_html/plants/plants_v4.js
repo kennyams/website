@@ -118,6 +118,7 @@
 				p1 =[boxcoords[0],boxcoords[2]];
 				p2 =[boxcoords[1],boxcoords[3]];
 				mymap.fitBounds([p1,p2]);
+				updateThumbs();
 			});
 		});
 		//log = function(){}
