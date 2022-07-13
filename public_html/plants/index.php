@@ -12,7 +12,7 @@ include "$root/session.php";
 		   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
 		   crossorigin=""/>
 		<link href="plants_v1.css" rel="stylesheet"/>
-		<script src="plants_v2.js"> </script>
+		<script src="plants_v3.js"> </script>
 
 		<!-- Make sure you put this AFTER Leaflet's CSS -->
 		 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"

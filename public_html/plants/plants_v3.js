@@ -42,6 +42,16 @@
 			//dragging: !L.Browser.mobile,
 			//tap: !L.Browser.mobile
 		});
+
+		let observer = new ResizeObserver(function(mutations) {
+			mymap.invalidateSize();
+		});
+
+
+		let child = document.querySelector('#mapid');
+		observer.observe(child, { attributes: true });
+
+
 		$("#frompicker").datepicker({
 			dateFormat:"yy-mm-dd",
 				autoSize:true,
