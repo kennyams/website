@@ -10,6 +10,7 @@
 	var first_image="0000-00-00";
 	var numPages;
 	var count=-1;
+	var invalidatingSize=false;
 	function log(msg){
 		if(debug)
 			console.log(msg);
@@ -44,7 +45,9 @@
 		});
 
 		let observer = new ResizeObserver(function(mutations) {
+			invalidatingSize=true;
 			mymap.invalidateSize();
+			invalidatingSize=false;
 		});
 
 
@@ -128,7 +131,9 @@
 			if(mapLoaded){
 				log("moveend");
 				if($('#onmap').is(":checked")){
-					updateThumbs(null);
+					if(!invalidatingSize){
+						updateThumbs(null);
+					}
 				}
 			}
 		})
