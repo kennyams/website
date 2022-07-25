@@ -5,14 +5,14 @@ include "$root/session.php";
 <!DOCTYPE html>
 <html>
 	<head>
-		<link href="plants_v1.css" rel="stylesheet"/>
+		<link href="plants_v2.css" rel="stylesheet"/>
 		<?php
 			include "$root/head.php";
 		?>
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
 		   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
 		   crossorigin=""/>
-		<script src="plants_v5.js"> </script>
+		<script src="plants_v6.js"> </script>
 
 		<!-- Make sure you put this AFTER Leaflet's CSS -->
 		 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
