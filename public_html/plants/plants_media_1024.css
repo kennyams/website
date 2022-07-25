@@ -1,0 +1,16 @@
+/*	@media (min-width:1025px) {  big landscape tablets, laptops, and desktops */ 
+		main {
+			display:grid;
+				grid-template-areas:
+					"filter map map"
+					"thumb main main"
+					;
+				grid-template-columns:1fr 1fr 1fr;
+				grid-template-rows:auto 100vh;
+		}
+		#piccontainer{
+			grid-template-columns: repeat(4,1fr);
+		}
+
+
+

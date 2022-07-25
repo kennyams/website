@@ -21,11 +21,11 @@
 	});
 
 	function updateCount(){
-		numPages = parseInt($('#numberOfPages').val());
+		numPages = parseInt($('#imagesPerPage').val());
 		if(numPages<0)
 			numPages=count;
 		$("#pageNumber").html(1+page_offset/numPages);
-		$("#numberOfPagesl").html(Math.ceil(count/numPages));
+		$("#pageCount").html(Math.ceil(count/numPages));
 	}
 
 	$( function() {
@@ -81,7 +81,7 @@
 			if(page_offset==0){
 				return;
 			}
-			numPages = parseInt($('#numberOfPages').val());
+			numPages = parseInt($('#imagesPerPage').val());
 			page_offset -= numPages;
 			if(page_offset<0){
 				page_offset=0;
@@ -92,7 +92,7 @@
 
 		$("#forwards").on('click',function(event){
 			console.log("forwards");
-			numPages = parseInt($('#numberOfPages').val());
+			numPages = parseInt($('#imagesPerPage').val());
 			if(numPages == -1){
 				return;
 			}
@@ -106,8 +106,8 @@
 			updateThumbs(event);
 		});
 
-		$('#numberOfPages').change(function(){
-			console.log("numberOfPages");
+		$('#imagesPerPage').change(function(){
+			console.log("imagesPerPage");
 			page_offset=0;
 			updateThumbs();
 		});
@@ -347,7 +347,7 @@
 							img.attr("data-plant-type",picdata.cats);
 							img.attr("data-location",picdata.loc);
 							$('#piccontainer').append(tdiv);
-							img.attr("style", "width:100%");
+							//img.attr("style", "width:100%");
 							var ip = img.clone().add($("<p>" + picdata.species +  "</p>"));
 							var divip = $("<div></div>").append(ip);
 							marker.bindPopup(divip.prop('outerHTML') );

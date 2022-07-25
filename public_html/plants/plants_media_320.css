@@ -1,0 +1,16 @@
+/*@media (min-width:320px)  { smartphones, iPhone, portrait 480x320 phones */
+	main {
+		display:grid;
+			grid-template-areas:
+				"filter filter "
+				"map map"
+				"thumb main"
+				;
+			grid-template-columns:75pt 1fr;
+			grid-template-rows:auto 200pt 1fr;
+			width:100%;
+	}
+	#piccontainer{
+		grid-template-columns: repeat(1,1fr);
+	}
+

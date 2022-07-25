@@ -8,7 +8,7 @@
 			$root=$_SERVER["DOCUMENT_ROOT"];
 			include "$root/head.php";
 		?>
-		<link href="plants.css" rel="stylesheet"/>
+		<link href="plants_v1.css" rel="stylesheet"/>
 		<style>
 			img#zoompic{
 				overflow:clip;

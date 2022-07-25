@@ -1,0 +1,15 @@
+/*@media (min-width:640px)  {  portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+	@media (min-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers,  */ 
+		main {
+			display:grid;
+				grid-template-areas:
+					"filter map map"
+					"thumb main main"
+					;
+				grid-template-columns:1fr 1fr 1fr;
+				grid-template-rows:350px 1fr;
+		}
+		#piccontainer{
+			grid-template-columns: repeat(2,1fr);
+		}
+

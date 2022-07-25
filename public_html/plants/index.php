@@ -5,13 +5,13 @@ include "$root/session.php";
 <!DOCTYPE html>
 <html>
 	<head>
+		<link href="plants_v1.css" rel="stylesheet"/>
 		<?php
 			include "$root/head.php";
 		?>
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
 		   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
 		   crossorigin=""/>
-		<link href="plants_v1.css" rel="stylesheet"/>
 		<script src="plants_v5.js"> </script>
 
 		<!-- Make sure you put this AFTER Leaflet's CSS -->
@@ -46,11 +46,11 @@ include "$root/session.php";
 					<!--p id="control" class="toggleControl">Control</p-->
 				</form>
 				<form id="place" > </form>
-				<div id="filterOptions">
+				<div class="labledcheckbox" id="filterOptions">
 					<label for="onmap">Filter on map area</label>
 					<input class="filterOptionsOption" id="onmap" form="filter" type="checkbox" value="map"/>
 				</div>
-				<div>
+				<div id="uploadButtonplacer">
 <?php
 					if(isset($_SESSION["email"])){
 						$p=GetPermissions($_SESSION["email"]);
@@ -63,20 +63,26 @@ include "$root/session.php";
 				</div>
 				<div>
 					<form  id="pagnation">
-						<input id="back" class="filterOptionsOption" form="pagnation" type="button" value="<">
-						<label>Images To Show</label>
-						<select id="numberOfPages" name="count" form="filter" >
-							<option Value="5" >5</option>
-							<option Value="10" >10</option>
-							<option Value="50" >50</option>
-							<option Value="-1" >Max</option>
-						</select>
-						<label>Number</label>
-						<input id="forwards" class="filterOptionsOption" type="button" value=">">
-						<label>Page</label>
-						<label id="pageNumber" >1</label>
-						<label>Of</label>
-						<label id="numberOfPagesl">10</label>
+						<div>
+							<label id="l-numberOfPages">Images To Show</label>
+							<select id="imagesPerPage" name="count" form="filter">
+								<option Value="5">5</option>
+								<option Value="10">10</option>
+								<option Value="50">50</option>
+								<option Value="-1">Max</option>
+							</select>
+						</div>
+						<div>
+							<input id="back" class="filterOptionsOption" form="pagnation" type="button" value="<">
+						<!--label id="l-number">Number</label-->
+							<input id="forwards" class="filterOptionsOption" type="button" value=">">
+						</div>
+						<div>
+							<label id="l-page">Page</label>
+							<label id="pageNumber" >1</label>
+							<label id="l-of">Of</label>
+							<label id="pageCount">10</label>
+						</div>
 					</form>
 				</div>
 			</div>
@@ -93,17 +99,23 @@ include "$root/session.php";
 					<div id="mainarea" >
 						<figure id="picframe">
 							<!--img id="mainImage" style="image-orientation: from-image;"/-->
-							<a href="">
-							<img id="mainImage"/>
+							<a id="mainImageA" href="" >
+								<img id="mainImage"/>
+								<figcaption>
+								<p id="imageinfo" ></p>
+								</figcaption>
 							</a>
-							<figure-caption id="imageinfo" ></figure-caption>
 						</figure>
 					</div>
 				<!--/div-->
 			<!--/section-->
 			<div id="mapframe">
+				<div>
 					<label  >Find Place</label>
+				</div>
+				<div>
 					<input class="filterOptionsOption" id="i_place" form="place" type="text" value="Surrey"/>
+				</div>
 				<div id="mapinner">
 					<div id="mapid"> </div>
 				</div>

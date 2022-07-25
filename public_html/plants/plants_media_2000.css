@@ -1,0 +1,30 @@
+/*
+	html {
+		position:fixed;
+		top:0;
+		bottom:0;
+		left:0;
+		right:0;
+	}
+	*/
+	body{
+		height:100%;
+	}
+	/*@media (min-width:2000px) {  hi-res laptops and desktops */ 
+	main {
+		display:grid;
+		grid-template-areas:
+			"filter map map main main"
+			"thumb map map main main"
+			;
+		grid-template-columns:1fr 1fr 1fr 1fr 1fr;
+		grid-template-rows:auto 1fr;
+		position:absolute;
+		top:0;
+		bottom:0;
+		overflow-y:auto;
+	}
+	#piccontainer{
+		grid-template-columns: repeat(5,1fr);
+	}
+}

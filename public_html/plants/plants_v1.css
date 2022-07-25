@@ -1,12 +1,11 @@
-	html {
-		width:100%;
-	}
-	main{
-		height:auto;
-	}
-	body{
-		height:auto;
-	}
+	@import 'plants_media_default.css';
+	@import 'plants_media_320.css' (min-width: 320px) and (max-width: 480px);
+	@import 'plants_media_480.css' (min-width: 481px) and (max-width: 640px);
+	@import 'plants_media_640.css' (min-width: 641px) and (max-width: 960px);
+	@import 'plants_media_960.css' (min-width: 961px) and (max-width: 1024px);
+	@import 'plants_media_1024.css' (min-width: 1025px) and (max-width: 1280px);
+	@import 'plants_media_1280.css' (min-width: 1281px) and (max-width: 1999px);
+	@import 'plants_media_2000.css' (min-width: 2000px);
 
 	#mapinner{
 		display:block;
@@ -35,17 +34,37 @@
 	}
 	#picframe{
 		display:flex;
-		flex-flow:column;
-		margin:auto;
-		width:100%;
+		flex-direction:column;
+		position:relative;
+		margin:unset;
+		width:100%; 
 		height:100%;
+		padding:5pt;
+		box-sizing:border-box;
+	}
+	#mainImageA{
+		display:grid;
+		grid-template-columns:1fr;
+		grid-template-rows:auto 1fr;
+		height:100%;
+		padding:0;
+		border:0;
+		margin:0;
 	}
 	img#mainImage{
 		image-orientation: from-image;
+		position:relative;
 		object-fit:contain;
 		width:100%;
-		height:90%;
+		height:100%;
 	}
+
+	#imageinfo{
+		position:relative;
+		text-align:center;
+		margin:0;
+	}
+
 	#rightview{
 		position:relative;
 		display:inline-flex;
@@ -53,12 +72,9 @@
 		flex-direction:row;*/
 		width:100%;
 	}
-	#imageinfo{
-		text-align:center;
-	}
 	#mainarea{
 		grid-area:main;
-		display:flex;
+		display:block;
 		overflow:auto;
 
 	}
@@ -89,23 +105,30 @@
 	}
 
 	#piccontainerCont{
+		display:block;
 		grid-area:thumb;
-		height:auto;
+		overflow-y:clip;
+		overflow-x:clip;
+		max-height:600px;
 	}
 	#piccontainer{
 		display : grid;
 		overflow-y:scroll;
 		overflow-x:clip;
-		border:2px solid white;
 		align-content:baseline;
 		align-items;
 		height:100%;
+		width:100%;
+		padding:5pt;
+		padding-right:0;
+		box-sizing:border-box;
 		
 	}
 	#loading{
 		position:absolute;
 		z-index:10;
 	}
+	/*
 	@media (orientation: landscape){
 		#piccontainer{
 			grid-template-columns: repeat(10,1fr);
@@ -117,6 +140,7 @@
 			grid-template-columns: repeat(6,1fr);
 		}
 	}
+	*/
 	#filtercont {
 		grid-area:filter;
 		display:flex;
@@ -128,13 +152,28 @@
 		flex-direction:column;
 	}
 	#filterOptions{
-		display:grid;
-		grid-template-columns:1fr 1fr;
-		grid-template-rows:auto auto;
-		justify-items:baseline;
 	}
 	.filterOptionsOption{
 		border:solid black 1px;
+	}
+	#pagnation{
+		position:relative;
+	}
+	#imagesPerPage{
+	}
+	#l-numberOfPages{
+	}
+	#back{
+	}
+	#forwards{
+	}
+	#l-page{
+	}
+	#pageNumber{
+	}
+	#l-of{
+	}
+	#pageCount{
 	}
 	.toggleControl{
 		width:100%;
@@ -213,7 +252,7 @@
 		background-color:red;
 	}
 
-
+/*
 	@media (orientation: landscape){
 		main{
 		grid-template-areas:
@@ -230,8 +269,6 @@
 			flex-direction:row;
 		}
 		#mapframe{
-			/*height:100%;*/
-			/*width:100%;*/
 		}
 	}
 
@@ -252,113 +289,8 @@
 			flex-direction:column;
 		}
 		#mapframe{
-			/*height:100%;*/
-			/*width:100%;*/
 		}
 	}
+	*/
 
-
-	@media (min-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */
-		main {
-			display:grid;
-				grid-template-areas:
-					"filter filter filter"
-				    "map map map"
-					"thumb main main"
-					;
-				grid-template-columns:1fr 2fr 2fr;
-				grid-template-rows:auto 200pt 300pt;
-		}
-		#piccontainer{
-			grid-template-columns: repeat(1,1fr);
-		}
-
-	}
-	@media (min-width:481px)  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
-		main {
-			display:grid;
-				grid-template-areas:
-					"filter map map"
-					"thumb main main"
-					;
-				grid-template-columns:1fr 2fr 2fr;
-				grid-template-rows:auto 100vh;
-		}
-		#piccontainer{
-			grid-template-columns: repeat(1,1fr);
-		}
-
-	}
-	@media (min-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers,  */ 
-		main {
-			display:grid;
-				grid-template-areas:
-					"filter map map"
-					"thumb main main"
-					;
-				grid-template-columns:1fr 1fr 1fr;
-				grid-template-rows:1fr 100vh;
-		}
-		#piccontainer{
-			grid-template-columns: repeat(2,1fr);
-		}
-	}
-	@media (min-width:961px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */ 
-		main {
-			display:grid;
-				grid-template-areas:
-					"filter map map"
-					"thumb main main"
-					;
-				grid-template-columns:1fr 1fr 1fr;
-				grid-template-rows:auto 100vh;
-		}
-		#piccontainer{
-			grid-template-columns: repeat(3,1fr);
-		}
-	}
-	@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */ 
-		main {
-			display:grid;
-				grid-template-areas:
-					"filter map map"
-					"thumb main main"
-					;
-				grid-template-columns:1fr 1fr 1fr;
-				grid-template-rows:auto 100vh;
-		}
-		#piccontainer{
-			grid-template-columns: repeat(4,1fr);
-		}
-	}
-
-	@media (min-width:1281px) { /* hi-res laptops and desktops */ 
-		main {
-			display:grid;
-				grid-template-areas:
-					"filter map map main main"
-					"thumb map map main main"
-					;
-				grid-template-columns:1fr 1fr 1fr 1fr 1fr;
-				grid-template-rows:auto auto;
-		}
-		#piccontainer{
-			grid-template-columns: repeat(5,1fr);
-		}
-	}
-
-	@media (min-width:2000px) { /* hi-res laptops and desktops */ 
-		main {
-			display:grid;
-				grid-template-areas:
-					"filter map map main main"
-					"thumb map map main main"
-					;
-				grid-template-columns:1fr 1fr 1fr 1fr 1fr;
-				grid-template-rows:auto auto;
-		}
-		#piccontainer{
-			grid-template-columns: repeat(5,1fr);
-		}
-	}
 
