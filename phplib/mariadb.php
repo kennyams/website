@@ -1,5 +1,6 @@
 <?php
 $my=null;
+include_once "$root/../phplib/log.php";
 include("${_SERVER["DOCUMENT_ROOT"]}/../ssl/creds/dbpass.php");
 include("${_SERVER["DOCUMENT_ROOT"]}/../phplib/blogdb.php");
 function connect(){
@@ -423,4 +424,5 @@ function GetRandomImage(){
 	}
 	disconnect();
 }
+
 ?>

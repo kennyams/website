@@ -10,14 +10,15 @@
 	}
 	if(isset($_POST["submit"])) {
 		$files=$_FILES['upload'];
+		logs(print_r($files,true));
 		for($i=0;$i<count($files['name']);$i++){
 			$name=$files['name'][$i];
-			$full_path=$files['full_path'][$i];
+			//$full_path=$files['full_path'][$i];
 			$type=$files['type'][$i];
 			$tmp_name=$files['tmp_name'][$i];
 			$error=$files['error'][$i];
 			$size=$files['size'][$i];
-			logs("$name $full_path $type $tmp_name $error $size");
+			logs("$name $type $tmp_name $error $size");
 			$check = getimagesize($tmp_name);
 			if($check !== false) {
 				echo "<p>File is an image - " . $check["mime"] . "</p>";
@@ -33,22 +34,25 @@
 						logs("location = $location");
 						$newwidth=$w/16;
 						$newheight=$h/16;
-						$source = imagecreatefromjpeg($fullname);
 						$orientation=exif_read_data($fullname)['Orientation'];
 						logs("orient = $orientation");
 						echo "<p>orient = $orientation</p>";
 						$temp=plantdata($path);
 						if($temp!=null){
+							$commonName="None found";
+							if(count($temp->species->commonNames)>0){
+								$commonName=$temp->species->commonNames[0];
+								echo "<p>".print_r($temp->species->commonNames,true)."</p>";
+								echo "<p>".print_r(count($temp->species->commonNames),true)."</p>";
+							}
 							echo "<p>".print_r($temp->species->scientificNameWithoutAuthor,true)."</p>";
 							echo "<p>".print_r($temp->species->genus->scientificNameWithoutAuthor,true)."</p>";
 							echo "<p>".print_r($temp->species->family->scientificNameWithoutAuthor,true)."</p>";
-							echo "<p>".print_r($temp->species->commonNames,true)."</p>";
-							echo "<p>".print_r(count($temp->species->commonNames),true)."</p>";
 							putPlants(
 								$temp->species->family->scientificNameWithoutAuthor,
 								$temp->species->genus->scientificNameWithoutAuthor,
 								$temp->species->scientificNameWithoutAuthor,
-								$temp->species->commonNames[0],
+								$commonName,
 								$fullname
 							);
 						}
