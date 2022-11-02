@@ -12,5 +12,5 @@
 	}
 	$x=array_slice($x,4);
 	$x=array_reduce($x,"cat");
-	print_r('<img src="'."$x".'" width="200px"></img>');
+	print_r('<img src="'."$x".'" width="200" alt="Random plant picture">');
 ?>

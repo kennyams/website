@@ -3,15 +3,16 @@ $root=$_SERVER["DOCUMENT_ROOT"];
 include "$root/session.php";
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<link href="plants_v2.css" rel="stylesheet"/>
+		<title>Plants I have collected</title>
+		<link href="plants_v2.css" rel="stylesheet">
 		<?php
 			include "$root/head.php";
 		?>
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
 		   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-		   crossorigin=""/>
+		   crossorigin="">
 		<script src="plants_v6.js"> </script>
 
 		<!-- Make sure you put this AFTER Leaflet's CSS -->
@@ -31,7 +32,7 @@ include "$root/session.php";
 			<div id="filtercont">
 				<form id="filter" >
 					<!--p id="Filter" class="toggleControl" style="grid-row:1;grid-column:1">Filter</p-->
-					<label class="dropitem a1" for="familySelected[]">Family</label>
+					<label class="dropitem a1" for="familySelected">Family</label>
 					<select class="dropitem b1" multiple  id="familySelected" name="familySelected[]" form="filter" > </select>
 					<label class="dropitem a2" for="genusSelected" >Genus</label>
 					<select class="dropitem b2" multiple  id="genusSelected" name="genusSelected[]" form="filter" > </select>
@@ -40,15 +41,15 @@ include "$root/session.php";
 					
 					<!--p id="DateRange" class="toggleControl" style="grid-row:4;grid-column:1">DateRange</p-->
 					<label class="c1">From:</label>
-					<input class="d1" type="text" id="frompicker"/>
+					<input class="d1" type="text" id="frompicker">
 					<label class="c2">To:</label>
-					<input  class="d2" type="text" id="topicker"/>
+					<input  class="d2" type="text" id="topicker">
 					<!--p id="control" class="toggleControl">Control</p-->
 				</form>
 				<form id="place" > </form>
 				<div class="labledcheckbox" id="filterOptions">
 					<label for="onmap">Filter on map area</label>
-					<input class="filterOptionsOption" id="onmap" form="filter" type="checkbox" value="map"/>
+					<input class="filterOptionsOption" id="onmap" form="filter" type="checkbox" value="map">
 				</div>
 				<div id="uploadButtonplacer">
 <?php
@@ -100,11 +101,11 @@ include "$root/session.php";
 						<figure id="picframe">
 							<!--img id="mainImage" style="image-orientation: from-image;"/-->
 							<a id="mainImageA" href="" >
-								<img id="mainImage"/>
+								<img id="mainImage" src="temp.jpg" alt="large plant image">
+							</a>
 								<figcaption>
 								<p id="imageinfo" ></p>
 								</figcaption>
-							</a>
 						</figure>
 					</div>
 				<!--/div-->
@@ -114,7 +115,7 @@ include "$root/session.php";
 					<label  >Find Place</label>
 				</div>
 				<div>
-					<input class="filterOptionsOption" id="i_place" form="place" type="text" value="Surrey"/>
+					<input class="filterOptionsOption" id="i_place" form="place" type="text" value="Surrey">
 				</div>
 				<div id="mapinner">
 					<div id="mapid"> </div>

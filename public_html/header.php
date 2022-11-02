@@ -3,16 +3,16 @@
 ?>
 <header>
 	<div id="me" class="headerpic">
-		<img class="headerpic" src="/staticimg/me.jpg"/>
+		<img class="headerpic" src="/staticimg/me.jpg" alt="me">
 	</div>
 	<div id="garden" class="headerpic">
-		<img class="headerpic" src="/staticimg/garden.jpg" />
+		<img class="headerpic" src="/staticimg/garden.jpg" alt="garden">
 	</div>
 	<div id="title">
-			<img id="titleimg" src="/staticimg/guildford.jpg"/>
+			<img id="titleimg" src="/staticimg/guildford.jpg" alt="garden">
 			<h1 id="intro">Kens Pub</h1>
-			<h2 id="pagetitle"></h2>
-			<a id="login-button" ms-hide-element="true" href="/login" class="button logout login w-button">
+			<h2 id="pagetitle">My personal web site</h2>
+			<a id="login-button" href="/login" class="button logout login w-button">
 <?php
 	if(isset($_SESSION['name'])){
 		echo $_SESSION['name'];
